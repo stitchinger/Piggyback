@@ -1,5 +1,9 @@
 package io.georgeous.piggyback;
 
+import io.georgeous.piggyback.modes.CarryMode;
+import io.georgeous.piggyback.modes.PassengerMode;
+import io.georgeous.piggyback.modes.TeleportMode;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -7,26 +11,37 @@ import org.bukkit.entity.Player;
 public class CarryCouple {
     private Entity target;
     private Player carrier;
-    private Entity carryInBetween;
-    public boolean passengerMode = false;
+    private CarryMode currentMode;
 
-    public CarryCouple(Entity target, Player carrier, ArmorStand carryInBetween){
+    public CarryCouple(Entity target, Player carrier){
         this.target = target;
         this.carrier = carrier;
-        if(carryInBetween == null){
-            passengerMode = true;
-        }
-        this.carryInBetween = carryInBetween;
+        this.currentMode = new PassengerMode(this);
     }
 
     public void update(){
-
+        currentMode.update();
+        if(currentMode.toggleConditionTrue()){
+            toggleMode();
+        }
     }
 
-    public CarryCouple(Entity target, Player carrier, Entity carryInBetween){
-        this.target = target;
-        this.carrier = carrier;
-        this.carryInBetween = carryInBetween;
+    public void start(){
+        currentMode.start();
+    }
+
+    public void stop(){
+        currentMode.stop();;
+    }
+
+    public void toggleMode(){
+        currentMode.stop();
+        if(currentMode instanceof PassengerMode){
+            currentMode = new TeleportMode(this);
+        } else{
+            currentMode = new PassengerMode(this);
+        }
+        currentMode.start();
     }
 
     public Entity getTarget() {
@@ -36,10 +51,4 @@ public class CarryCouple {
     public Player getCarrier() {
         return carrier;
     }
-
-    public Entity getCarryInBetween() {
-        return carryInBetween;
-    }
-
-
 }

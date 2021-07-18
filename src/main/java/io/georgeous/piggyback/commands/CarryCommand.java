@@ -1,5 +1,6 @@
-package io.georgeous.piggyback;
+package io.georgeous.piggyback.commands;
 
+import io.georgeous.piggyback.Piggyback;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -7,12 +8,12 @@ import org.bukkit.command.CommandSender;
 public class CarryCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(Piggyback.passengerMode){
-            Piggyback.passengerMode = false;
-        }else{
-            Piggyback.passengerMode = true;
+
+        if(Piggyback.carryPairs.containsKey(sender)){
+            Piggyback.carryPairs.get(sender).toggleMode();
         }
-        //test
+
+
         return false;
     }
 }

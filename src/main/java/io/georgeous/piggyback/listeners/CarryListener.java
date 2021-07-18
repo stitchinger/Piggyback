@@ -28,7 +28,7 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 import java.util.function.Predicate;
 
 
-public class EventReactor implements Listener {
+public class CarryListener implements Listener {
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
