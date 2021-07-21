@@ -1,31 +1,42 @@
 package io.georgeous.piggyback;
 
-
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import io.georgeous.piggyback.commands.CarryCommand;
 import io.georgeous.piggyback.listeners.CarryListener;
+import net.minecraft.core.IRegistry;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.EnumCreatureType;
+import net.minecraft.world.entity.decoration.EntityArmorStand;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
 import java.util.HashMap;
 import java.util.Map;
 
 
 public final class Piggyback extends JavaPlugin {
 
+    public static Map<Player, CarryCouple> carryCoupleMap = new HashMap<>();
     private static final boolean NEED_ITEM = true;
     private static final String ITEM_NAME = "Baby-Handler";
-    public static boolean passengerMode = false;
 
-    public static Map<Player, CarryCouple> carryPairs = new HashMap<>();
 
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new CarryListener(), this);
+
+        //EntityTypes.Builder entitytypes_builder = EntityTypes.Builder.a(EntityArmorStand::new, EnumCreatureType.g).a(0.1F, 0.1F).trackingRange(10);
+        //custom = (EntityTypes<EntityArmorStand>) IRegistry.a(IRegistry.Y, "armor_stand", entitytypes_builder.a("armor_stand"));
+
+
+        getServer().getPluginManager().registerEvents(new CarryListener(this), this);
         getServer().getPluginCommand("carry").setExecutor(new CarryCommand());
 
         for(Player player : Bukkit.getOnlinePlayers()){
@@ -40,18 +51,18 @@ public final class Piggyback extends JavaPlugin {
 
             }
         }.runTaskTimer(this, 0L, 1L);
+
     }
 
     public void carryUpdate(){
-        for (Map.Entry<Player, CarryCouple> entry : carryPairs.entrySet()) {
+        for (Map.Entry<Player, CarryCouple> entry : carryCoupleMap.entrySet()) {
             entry.getValue().update();
         }
     }
 
-
     @Override
     public void onDisable() {
-        for (Map.Entry<Player, CarryCouple> entry : carryPairs.entrySet()) {
+        for (Map.Entry<Player, CarryCouple> entry : carryCoupleMap.entrySet()) {
             stopCarry(entry.getKey());
         }
     }
@@ -72,23 +83,21 @@ public final class Piggyback extends JavaPlugin {
     }
 
     public static void startCarry(Player player, Entity target) {
-
         target.setInvulnerable(true);
         CarryCouple carryCouple = new CarryCouple(target, player);
         carryCouple.start();
 
-        carryPairs.put(player, carryCouple);
+        carryCoupleMap.put(player, carryCouple);
         startCarryEffects(target.getLocation());
     }
 
 
     public static void stopCarry(Player player) {
-        CarryCouple carryCouple = carryPairs.get(player);
-        Entity target = carryCouple.getTarget();
-        target.setInvulnerable(false);
+        CarryCouple carryCouple = carryCoupleMap.get(player);
+        carryCouple.getTarget().setInvulnerable(false);
 
         carryCouple.stop();
-        carryPairs.remove(player);
+        carryCoupleMap.remove(player);
         stopCarryEffects(player.getLocation());
     }
 

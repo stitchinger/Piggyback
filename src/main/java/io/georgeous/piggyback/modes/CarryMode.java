@@ -22,6 +22,19 @@ public abstract class CarryMode {
 
     public boolean hasSpaceAbove(Player player){
         List<Location> locs = new ArrayList<>();
+
+        locs.add(player.getLocation().clone().add(0,2,0));
+        locs.add(player.getLocation().clone().add(0,3,0));
+
+        boolean value = true;
+        for(Location l : locs){
+            value = value && noBlockThere(l);
+        }
+        return value;
+    }
+
+    public boolean hasSpaceAboveOld(Player player){
+        List<Location> locs = new ArrayList<>();
         locs.add(player.getLocation().clone().add(-1,2,-1));
         locs.add(player.getLocation().clone().add(-1,2,0));
         locs.add(player.getLocation().clone().add(-1,2,1));

@@ -14,17 +14,21 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
-public class PassengerMode extends CarryMode{
+public class FollowPassengerMode extends CarryMode{
 
     private CarryCouple cc;
     private Player player;
     private Entity target;
     private ArmorStand carryInBetween;
 
-    public PassengerMode(CarryCouple cc){
+    private long spaceAboveTime = 0;
+    private long lastTime;
+
+    public FollowPassengerMode(CarryCouple cc){
         this.cc = cc;
         this.player = cc.getCarrier();
         this.target = cc.getTarget();
+        this.lastTime = System.currentTimeMillis();
     }
 
 
@@ -53,12 +57,19 @@ public class PassengerMode extends CarryMode{
     @Override
     public void update() {
         avoidWaterDismount();
+        if(hasSpaceAbove(player)){
+            // startCountdown
+            spaceAboveTime = spaceAboveTime + (System.currentTimeMillis() - lastTime);
+        }else{
+            spaceAboveTime = 0;
+        }
+        lastTime = System.currentTimeMillis();
         //player.sendMessage(carryInBetween.getLocation().getY() + "");
     }
 
     @Override
     public boolean toggleConditionTrue(){
-       return !hasSpaceAbove(player);
+        return hasSpaceAbove(player) && spaceAboveTime >= 2000;
     }
 
     private void avoidWaterDismount(){
@@ -71,17 +82,16 @@ public class PassengerMode extends CarryMode{
     }
 
     private static ArmorStand createCarryInBetween(Player player) {
-        MyArmor as = new MyArmor(player.getLocation(),player, false);
+        MyArmor as = new MyArmor(player.getLocation(),player, true);
         WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         world.addEntity(as);
 
+
         ArmorStand armorStand = (ArmorStand) Bukkit.getEntity(as.getBukkitEntity().getUniqueId());
-        armorStand.setCanPickupItems(false);
         return armorStand;
     }
 
     private static void dropCarry(Player player, Entity target) {
-        // tp carry-target in front of player
         Location pos = player.getLocation().add(0, 0.1, 0);
         Vector dir = player.getLocation().getDirection().setY(0).multiply(1);
         Location destination = pos.add(dir);

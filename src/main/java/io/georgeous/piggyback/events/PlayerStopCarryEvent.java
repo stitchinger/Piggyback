@@ -16,7 +16,7 @@ public class PlayerStopCarryEvent extends Event implements Cancellable {
 
     public PlayerStopCarryEvent(Player player){
         this.player = player;
-        this.target = Piggyback.carryPairs.get(this.player).getTarget();
+        this.target = Piggyback.carryCoupleMap.get(this.player).getTarget();
     }
 
     public Player getPlayer() {

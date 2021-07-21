@@ -1,6 +1,7 @@
 package io.georgeous.piggyback;
 
 import io.georgeous.piggyback.modes.CarryMode;
+import io.georgeous.piggyback.modes.FollowPassengerMode;
 import io.georgeous.piggyback.modes.PassengerMode;
 import io.georgeous.piggyback.modes.TeleportMode;
 import org.bukkit.Location;
@@ -37,7 +38,7 @@ public class CarryCouple {
     public void toggleMode(){
         currentMode.stop();
         if(currentMode instanceof PassengerMode){
-            currentMode = new TeleportMode(this);
+            currentMode = new FollowPassengerMode(this);
         } else{
             currentMode = new PassengerMode(this);
         }
