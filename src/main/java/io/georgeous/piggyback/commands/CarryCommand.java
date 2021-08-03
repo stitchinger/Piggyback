@@ -9,9 +9,6 @@ public class CarryCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if(Piggyback.carryCoupleMap.containsKey(sender)){
-            Piggyback.carryCoupleMap.get(sender).toggleMode();
-        }
 
 
         return false;

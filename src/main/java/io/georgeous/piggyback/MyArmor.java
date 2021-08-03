@@ -41,24 +41,31 @@ public class MyArmor extends EntityArmorStand{
         super.tick();
         updateSize();
 
-        if(followMode){
+        Location myLocation = new Location(player.getWorld(), this.locX(), this.locY(), this.locZ());
+        Location destination = myLocation;
+
+        if(true){ // Follow behind
             double minDistance = 2;
-           // Vector distanceAway = player.getLocation().getDirection().setY(0).normalize().multiply(minDistance * (-1)).setY(0);
-            Location myLocation = new Location(player.getWorld(), this.locX(), this.locY(), this.locZ());
 
-            Location difference = player.getLocation().subtract(myLocation); // 5,5 - 0,0 = 5,5
-
+            Location difference = player.getLocation().subtract(myLocation);
             double distance = player.getLocation().distance(myLocation);
 
             if(distance > minDistance){
-                Location destination = myLocation.add(difference.multiply(0.1));
-                this.setPosition(destination.getX(), destination.getY(), destination.getZ());
+                destination = player.getLocation().subtract(difference.toVector().normalize().multiply(2));
+                destination.setY(player.getLocation().getY());
             }
-            lastLoc = player.getLocation();
 
-        }else{
-            this.setPosition(player.getLocation().getX(), player.getLocation().getY() + 2.5, player.getLocation().getZ());
+        }else{ // Carry on top Mode
+            destination = player.getLocation().clone().add(0,2.5,0);
         }
+
+
+
+        this.setPosition(destination.getX(),destination.getY(), destination.getZ());
+    }
+
+    public void setFollowMode(boolean value){
+        followMode = value;
     }
 
     @Override

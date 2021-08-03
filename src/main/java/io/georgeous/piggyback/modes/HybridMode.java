@@ -9,10 +9,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
-public class FollowPassengerMode extends CarryMode{
+public class HybridMode extends CarryMode{
 
     private CarryCouple cc;
     private Player player;
@@ -22,7 +23,7 @@ public class FollowPassengerMode extends CarryMode{
     private long spaceAboveTime = 0;
     private long lastTime;
 
-    public FollowPassengerMode(CarryCouple cc){
+    public HybridMode(CarryCouple cc){
         this.cc = cc;
         this.player = cc.getCarrier();
         this.target = cc.getTarget();
@@ -53,12 +54,18 @@ public class FollowPassengerMode extends CarryMode{
         avoidWaterDismount();
 
         if(hasSpaceAbove(player)){
-            // startCountdown
             spaceAboveTime = spaceAboveTime + (System.currentTimeMillis() - lastTime);
         }else{
             spaceAboveTime = 0;
         }
         lastTime = System.currentTimeMillis();
+
+        // toggle mode if necessary
+        if(toggleConditionTrue()){
+            ((MyArmor)((CraftEntity) carryInBetween).getHandle()).setFollowMode(false);
+        } else{
+            ((MyArmor)((CraftEntity) carryInBetween).getHandle()).setFollowMode(true);
+        }
     }
 
     @Override
@@ -80,10 +87,8 @@ public class FollowPassengerMode extends CarryMode{
         WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         world.addEntity(as);
 
-        ;
-
-
         ArmorStand armorStand = (ArmorStand) Bukkit.getEntity(as.getBukkitEntity().getUniqueId());
+
         return armorStand;
     }
 
@@ -91,10 +96,14 @@ public class FollowPassengerMode extends CarryMode{
         Location pos = player.getLocation().add(0, 0.1, 0);
         Vector dir = player.getLocation().getDirection().setY(0).multiply(1);
         Location destination = pos.add(dir);
+        destination.setX(((int)(destination.getX())) + 0.5);
+        destination.setY(((int)(destination.getY())) + 0.5);
+        destination.setZ(((int)(destination.getZ())) + 0.5);
 
         // Avoid teleport in block
         if (destination.getBlock().getBlockData().getMaterial() != Material.AIR
-                || destination.add(0,1,0).getBlock().getBlockData().getMaterial() != Material.AIR) {
+                || destination.clone().add(0,1,0).getBlock().getBlockData().getMaterial() != Material.AIR
+                || destination.clone().add(0,2,0).getBlock().getBlockData().getMaterial() != Material.AIR) {
             target.teleport(player.getLocation());
         } else{
             target.teleport(destination);
