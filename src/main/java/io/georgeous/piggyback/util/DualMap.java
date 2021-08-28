@@ -45,4 +45,12 @@ public class DualMap {
     public boolean containsKey(Object object){
         return carriers.containsKey(object) || carried.containsKey(object);
     }
+
+    public boolean isCarrier(Object object){
+        return carriers.containsKey(object);
+    }
+
+    public boolean isCarried(Object object){
+        return carried.containsKey(object);
+    }
 }

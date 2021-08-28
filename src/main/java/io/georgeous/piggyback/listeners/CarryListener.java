@@ -18,6 +18,8 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import java.util.List;
+
 
 public class CarryListener implements Listener {
 
@@ -31,8 +33,9 @@ public class CarryListener implements Listener {
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
         Entity target = null;
-        if (Bukkit.getServer().selectEntities(player, "@e[name=!" + player.getName() + ", sort=nearest,limit=1,tag=!surrogate,distance=..2]").size() > 0) {
-            target = Bukkit.getServer().selectEntities(player, "@e[name=!" + player.getName() + ", sort=nearest,limit=1,tag=!surrogate,distance=..2]").get(0);
+        List<Entity> entities = Bukkit.getServer().selectEntities(player, "@e[name=!" + player.getName() + ",type=!boat, sort=nearest,limit=1,tag=!surrogate,distance=..2]");
+        if (entities.size() > 0) {
+            target = entities.get(0);
         }
 
         if (!Piggyback.isProperItem(player)
@@ -71,7 +74,7 @@ public class CarryListener implements Listener {
 
     @EventHandler
     public void disableDismount(EntityDismountEvent event) {
-        if (Piggyback.carryCoupleMap.containsKey(event.getEntity())) {
+        if (Piggyback.carryCoupleMap.isCarried(event.getEntity())) {
             event.setCancelled(true);
         }
     }
