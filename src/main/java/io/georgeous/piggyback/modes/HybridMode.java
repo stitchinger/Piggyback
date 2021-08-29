@@ -13,7 +13,7 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
-public class HybridMode extends CarryMode{
+public class HybridMode extends CarryMode {
 
     private CarryCouple cc;
     private Player player;
@@ -23,13 +23,12 @@ public class HybridMode extends CarryMode{
     private long spaceAboveTime = 0;
     private long lastTime;
 
-    public HybridMode(CarryCouple cc){
+    public HybridMode(CarryCouple cc) {
         this.cc = cc;
         this.player = cc.getCarrier();
         this.target = cc.getTarget();
         this.lastTime = System.currentTimeMillis();
     }
-
 
     @Override
     public void start() {
@@ -53,37 +52,37 @@ public class HybridMode extends CarryMode{
     public void update() {
         avoidWaterDismount();
 
-        if(hasSpaceAbove(player)){
+        if (hasSpaceAbove(player)) {
             spaceAboveTime = spaceAboveTime + (System.currentTimeMillis() - lastTime);
-        }else{
+        } else {
             spaceAboveTime = 0;
         }
         lastTime = System.currentTimeMillis();
 
         // toggle mode if necessary
-        if(toggleConditionTrue()){
-            ((MyArmor)((CraftEntity) carryInBetween).getHandle()).setFollowMode(false);
-        } else{
-            ((MyArmor)((CraftEntity) carryInBetween).getHandle()).setFollowMode(true);
+        if (toggleConditionTrue()) {
+            ((MyArmor) ((CraftEntity) carryInBetween).getHandle()).setFollowMode(false);
+        } else {
+            ((MyArmor) ((CraftEntity) carryInBetween).getHandle()).setFollowMode(true);
         }
     }
 
     @Override
-    public boolean toggleConditionTrue(){
+    public boolean toggleConditionTrue() {
         return hasSpaceAbove(player) && spaceAboveTime >= 2000;
     }
 
-    private void avoidWaterDismount(){
-        if(!player.getPassengers().contains(carryInBetween)){
+    private void avoidWaterDismount() {
+        if (!player.getPassengers().contains(carryInBetween)) {
             //player.addPassenger(carryInBetween);
         }
-        if(!carryInBetween.getPassengers().contains(target)){
+        if (!carryInBetween.getPassengers().contains(target)) {
             carryInBetween.addPassenger(target);
         }
     }
 
     private static ArmorStand createCarryInBetween(Player player) {
-        MyArmor as = new MyArmor(player.getLocation(),player, true);
+        MyArmor as = new MyArmor(player.getLocation(), player, true);
         WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         world.addEntity(as);
 
@@ -96,26 +95,24 @@ public class HybridMode extends CarryMode{
         Location pos = player.getLocation().add(0, 0.1, 0);
         Vector dir = player.getLocation().getDirection().setY(0).multiply(1);
         Location destination = pos.add(dir);
-        destination.setX(((int)(destination.getX())) + 0.5);
-        destination.setY(((int)(destination.getY())) + 0.5);
-        destination.setZ(((int)(destination.getZ())) + 0.5);
+        destination.setX(((int) (destination.getX())) + 0.5);
+        destination.setY(((int) (destination.getY())) + 0.5);
+        destination.setZ(((int) (destination.getZ())) + 0.5);
 
         // Avoid teleport in block
         if (destination.getBlock().getBlockData().getMaterial() != Material.AIR
-                || destination.clone().add(0,1,0).getBlock().getBlockData().getMaterial() != Material.AIR
-                || destination.clone().add(0,2,0).getBlock().getBlockData().getMaterial() != Material.AIR) {
+                || destination.clone().add(0, 1, 0).getBlock().getBlockData().getMaterial() != Material.AIR
+                || destination.clone().add(0, 2, 0).getBlock().getBlockData().getMaterial() != Material.AIR) {
             target.teleport(player.getLocation());
-        } else{
+        } else {
             target.teleport(destination);
         }
     }
 
-    private static void killCarryInBetween(ArmorStand armorStand){
-        EntityArmorStand a = ((CraftArmorStand)(armorStand)).getHandle();
-        if(a instanceof MyArmor){
+    private static void killCarryInBetween(ArmorStand armorStand) {
+        EntityArmorStand a = ((CraftArmorStand) (armorStand)).getHandle();
+        if (a instanceof MyArmor) {
             ((MyArmor) a).vanish();
         }
     }
-
-
 }

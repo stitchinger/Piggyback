@@ -1,9 +1,7 @@
 package io.georgeous.piggyback;
 
 import io.georgeous.piggyback.modes.CarryMode;
-import io.georgeous.piggyback.modes.FollowPassengerMode;
 import io.georgeous.piggyback.modes.HybridMode;
-import io.georgeous.piggyback.modes.PassengerMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -12,21 +10,21 @@ public class CarryCouple {
     private Player carrier;
     private CarryMode currentMode;
 
-    public CarryCouple(Entity target, Player carrier){
+    public CarryCouple(Entity target, Player carrier) {
         this.target = target;
         this.carrier = carrier;
         this.currentMode = new HybridMode(this);
     }
 
-    public void update(){
+    public void update() {
         currentMode.update();
     }
 
-    public void start(){
+    public void start() {
         currentMode.start();
     }
 
-    public void stop(){
+    public void stop() {
         currentMode.stop();
     }
 

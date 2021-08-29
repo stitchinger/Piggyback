@@ -12,28 +12,23 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftArmorStand;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
-public class PassengerMode extends CarryMode{
+public class PassengerMode extends CarryMode {
 
     private CarryCouple cc;
     private Player player;
     private Entity target;
     private ArmorStand carryInBetween;
 
-    public PassengerMode(CarryCouple cc){
+    public PassengerMode(CarryCouple cc) {
         this.cc = cc;
         this.player = cc.getCarrier();
         this.target = cc.getTarget();
     }
 
-
     @Override
     public void start() {
-        //MyArmor myArmor = new MyArmor(player.getLocation());
-
         carryInBetween = createCarryInBetween(player);
         carryInBetween.addPassenger(target);
-        //player.addPassenger(carryInBetween);
-
     }
 
     @Override
@@ -51,25 +46,24 @@ public class PassengerMode extends CarryMode{
     @Override
     public void update() {
         avoidWaterDismount();
-        //player.sendMessage(carryInBetween.getLocation().getY() + "");
     }
 
     @Override
-    public boolean toggleConditionTrue(){
-       return !hasSpaceAbove(player);
+    public boolean toggleConditionTrue() {
+        return !hasSpaceAbove(player);
     }
 
-    private void avoidWaterDismount(){
-        if(!player.getPassengers().contains(carryInBetween)){
+    private void avoidWaterDismount() {
+        if (!player.getPassengers().contains(carryInBetween)) {
             //player.addPassenger(carryInBetween);
         }
-        if(!carryInBetween.getPassengers().contains(target)){
+        if (!carryInBetween.getPassengers().contains(target)) {
             carryInBetween.addPassenger(target);
         }
     }
 
     private static ArmorStand createCarryInBetween(Player player) {
-        MyArmor as = new MyArmor(player.getLocation(),player, false);
+        MyArmor as = new MyArmor(player.getLocation(), player, false);
         WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
         world.addEntity(as);
 
@@ -86,19 +80,17 @@ public class PassengerMode extends CarryMode{
 
         // Avoid teleport in block
         if (destination.getBlock().getBlockData().getMaterial() != Material.AIR
-                || destination.add(0,1,0).getBlock().getBlockData().getMaterial() != Material.AIR) {
+                || destination.add(0, 1, 0).getBlock().getBlockData().getMaterial() != Material.AIR) {
             target.teleport(player.getLocation());
-        } else{
+        } else {
             target.teleport(destination);
         }
     }
 
-    private static void killCarryInBetween(ArmorStand armorStand){
-        EntityArmorStand a = ((CraftArmorStand)(armorStand)).getHandle();
-        if(a instanceof MyArmor){
+    private static void killCarryInBetween(ArmorStand armorStand) {
+        EntityArmorStand a = ((CraftArmorStand) (armorStand)).getHandle();
+        if (a instanceof MyArmor) {
             ((MyArmor) a).vanish();
         }
     }
-
-
 }

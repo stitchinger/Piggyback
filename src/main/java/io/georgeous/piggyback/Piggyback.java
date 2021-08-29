@@ -17,11 +17,9 @@ import java.util.Map;
 
 public final class Piggyback extends JavaPlugin {
 
-    //public static Map<Player, CarryCouple> carryCoupleMap = new HashMap<>();
     public static DualMap carryCoupleMap = new DualMap();
     private static final boolean NEED_ITEM = true;
     private static final String ITEM_NAME = "Baby-Handler";
-
 
 
     @Override
@@ -29,7 +27,7 @@ public final class Piggyback extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CarryListener(this), this);
         getServer().getPluginCommand("carry").setExecutor(new CarryCommand());
 
-        for(Player player : Bukkit.getOnlinePlayers()){
+        for (Player player : Bukkit.getOnlinePlayers()) {
             player.setInvulnerable(false);
         }
 
@@ -44,7 +42,7 @@ public final class Piggyback extends JavaPlugin {
 
     }
 
-    public void carryUpdate(){
+    public void carryUpdate() {
         for (Map.Entry<Player, CarryCouple> entry : carryCoupleMap.carriers.entrySet()) {
             entry.getValue().update();
         }
@@ -77,7 +75,7 @@ public final class Piggyback extends JavaPlugin {
         CarryCouple carryCouple = new CarryCouple(target, player);
         carryCouple.start();
 
-        carryCoupleMap.put(player,target, carryCouple);
+        carryCoupleMap.put(player, target, carryCouple);
         startCarryEffects(target.getLocation());
     }
 

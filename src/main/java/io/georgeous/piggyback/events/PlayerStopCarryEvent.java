@@ -14,7 +14,7 @@ public class PlayerStopCarryEvent extends Event implements Cancellable {
     Player player;
     Entity target;
 
-    public PlayerStopCarryEvent(Player player){
+    public PlayerStopCarryEvent(Player player) {
         this.player = player;
         this.target = Piggyback.carryCoupleMap.get(this.player).getTarget();
     }
@@ -32,7 +32,7 @@ public class PlayerStopCarryEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
@@ -43,6 +43,5 @@ public class PlayerStopCarryEvent extends Event implements Cancellable {
 
     @Override
     public void setCancelled(boolean cancel) {
-
     }
 }
