@@ -13,7 +13,7 @@ public class PlayerStartCarryEvent extends Event implements Cancellable {
     Entity target;
     boolean canceled;
 
-    public PlayerStartCarryEvent(Player player, Entity target){
+    public PlayerStartCarryEvent(Player player, Entity target) {
         this.player = player;
         this.target = target;
         this.canceled = false;
@@ -32,7 +32,7 @@ public class PlayerStartCarryEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 

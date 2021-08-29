@@ -9,62 +9,59 @@ import java.util.List;
 
 public abstract class CarryMode {
 
-
     public abstract void start();
 
     public abstract void stop();
 
     public abstract void update();
 
-    public boolean toggleConditionTrue(){
+    public boolean toggleConditionTrue() {
         return false;
     }
 
-    public boolean hasSpaceAbove(Player player){
+    public boolean hasSpaceAbove(Player player) {
         List<Location> locs = new ArrayList<>();
 
-        locs.add(player.getLocation().clone().add(0,2,0));
-        locs.add(player.getLocation().clone().add(0,3,0));
+        locs.add(player.getLocation().clone().add(0, 2, 0));
+        locs.add(player.getLocation().clone().add(0, 3, 0));
 
         boolean value = true;
-        for(Location l : locs){
+        for (Location l : locs) {
             value = value && noBlockThere(l);
         }
         return value;
     }
 
-    public boolean hasSpaceAboveOld(Player player){
+    public boolean hasSpaceAboveOld(Player player) {
         List<Location> locs = new ArrayList<>();
-        locs.add(player.getLocation().clone().add(-1,2,-1));
-        locs.add(player.getLocation().clone().add(-1,2,0));
-        locs.add(player.getLocation().clone().add(-1,2,1));
-        locs.add(player.getLocation().clone().add(0,2,-1));
-        locs.add(player.getLocation().clone().add(0,2,0));
-        locs.add(player.getLocation().clone().add(0,2,1));
-        locs.add(player.getLocation().clone().add(1,2,-1));
-        locs.add(player.getLocation().clone().add(1,2,0));
-        locs.add(player.getLocation().clone().add(1,2,1));
+        locs.add(player.getLocation().clone().add(-1, 2, -1));
+        locs.add(player.getLocation().clone().add(-1, 2, 0));
+        locs.add(player.getLocation().clone().add(-1, 2, 1));
+        locs.add(player.getLocation().clone().add(0, 2, -1));
+        locs.add(player.getLocation().clone().add(0, 2, 0));
+        locs.add(player.getLocation().clone().add(0, 2, 1));
+        locs.add(player.getLocation().clone().add(1, 2, -1));
+        locs.add(player.getLocation().clone().add(1, 2, 0));
+        locs.add(player.getLocation().clone().add(1, 2, 1));
 
-        locs.add(player.getLocation().clone().add(-1,3,-1));
-        locs.add(player.getLocation().clone().add(-1,3,0));
-        locs.add(player.getLocation().clone().add(-1,3,1));
-        locs.add(player.getLocation().clone().add(0,3,-1));
-        locs.add(player.getLocation().clone().add(0,3,1));
-        locs.add(player.getLocation().clone().add(1,3,-1));
-        locs.add(player.getLocation().clone().add(1,3,0));
-        locs.add(player.getLocation().clone().add(1,3,1));
-        locs.add(player.getLocation().clone().add(0,3,0));
+        locs.add(player.getLocation().clone().add(-1, 3, -1));
+        locs.add(player.getLocation().clone().add(-1, 3, 0));
+        locs.add(player.getLocation().clone().add(-1, 3, 1));
+        locs.add(player.getLocation().clone().add(0, 3, -1));
+        locs.add(player.getLocation().clone().add(0, 3, 1));
+        locs.add(player.getLocation().clone().add(1, 3, -1));
+        locs.add(player.getLocation().clone().add(1, 3, 0));
+        locs.add(player.getLocation().clone().add(1, 3, 1));
+        locs.add(player.getLocation().clone().add(0, 3, 0));
 
         boolean value = true;
-        for(Location l : locs){
+        for (Location l : locs) {
             value = value && noBlockThere(l);
         }
         return value;
     }
 
-    public boolean noBlockThere(Location loc){
+    public boolean noBlockThere(Location loc) {
         return loc.getBlock().getBlockData().getMaterial() == Material.AIR;
     }
-
-
 }

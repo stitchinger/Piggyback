@@ -25,7 +25,7 @@ public class CarryListener implements Listener {
 
     private final Piggyback plugin;
 
-    public CarryListener(Piggyback plugin){
+    public CarryListener(Piggyback plugin) {
         this.plugin = plugin;
     }
 
@@ -44,7 +44,7 @@ public class CarryListener implements Listener {
         }
 
         if (Piggyback.carryCoupleMap.get(player) == null) {
-            if(target == null){
+            if (target == null) {
                 return;
             }
             PlayerStartCarryEvent e = new PlayerStartCarryEvent(player, target);
@@ -66,7 +66,7 @@ public class CarryListener implements Listener {
     public void disableSuffocationDamage(EntityDamageEvent event) {
         if (!(Piggyback.carryCoupleMap.carried.containsKey(event.getEntity())))
             return;
-        if(!(event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)))
+        if (!(event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)))
             return;
 
         event.setCancelled(true);
@@ -81,29 +81,29 @@ public class CarryListener implements Listener {
 
     @EventHandler
     public void vehicleExit(VehicleExitEvent event) {
-        if(event.getVehicle() instanceof Player){
+        if (event.getVehicle() instanceof Player) {
             event.getVehicle().sendMessage("Vehicle Exit");
         }
-        if(event.getVehicle() instanceof Player || event.getVehicle().getScoreboardTags().contains("carryhelper")){
-                event.setCancelled(true);
+        if (event.getVehicle() instanceof Player || event.getVehicle().getScoreboardTags().contains("carryhelper")) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onArmorStandEquip(PlayerArmorStandManipulateEvent event) {
         ArmorStand armorStand = event.getRightClicked();
-        if(armorStand.getScoreboardTags().contains("carryhelper"))
+        if (armorStand.getScoreboardTags().contains("carryhelper"))
             event.setCancelled(true);
     }
 
     @EventHandler
-    public void playerJoin(PlayerJoinEvent event){
+    public void playerJoin(PlayerJoinEvent event) {
         event.getPlayer().setInvulnerable(false);
     }
 
     @EventHandler
-    public void playerQuit(PlayerQuitEvent event){
-        if(Piggyback.carryCoupleMap.get(event.getPlayer()) == null){
+    public void playerQuit(PlayerQuitEvent event) {
+        if (Piggyback.carryCoupleMap.get(event.getPlayer()) == null) {
             return;
         }
         Player player = event.getPlayer();
@@ -111,8 +111,8 @@ public class CarryListener implements Listener {
     }
 
     @EventHandler
-    public void playerDeath(PlayerDeathEvent event){
-        if(Piggyback.carryCoupleMap.get(event.getEntity()) == null){
+    public void playerDeath(PlayerDeathEvent event) {
+        if (Piggyback.carryCoupleMap.get(event.getEntity()) == null) {
             return;
         }
         Player player = event.getEntity();

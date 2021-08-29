@@ -21,8 +21,8 @@ public class TeleportMode extends CarryMode {
         this.cc = cc;
         this.player = cc.getCarrier();
         this.target = cc.getTarget();
-        lastLoc = new Location(player.getWorld(),0,0,0);
-        lastDest = new Location(player.getWorld(),0,0,0);
+        lastLoc = new Location(player.getWorld(), 0, 0, 0);
+        lastDest = new Location(player.getWorld(), 0, 0, 0);
     }
 
     @Override
@@ -39,10 +39,10 @@ public class TeleportMode extends CarryMode {
     public void update() {
         Vector distanceAway = player.getLocation().getDirection().normalize().multiply(-1).setY(0);
         Location destination = lastDest;
-        if(!samePostion(player.getLocation(), lastLoc)){
+        if (!samePostion(player.getLocation(), lastLoc)) {
             destination = player.getLocation().add(distanceAway);
             target.teleport(destination.setDirection(target.getLocation().getDirection()));
-        }else{
+        } else {
             target.teleport(lastDest);
         }
         lastLoc = player.getLocation();
@@ -60,11 +60,8 @@ public class TeleportMode extends CarryMode {
         return hasSpaceAbove(player);
     }
 
-
     private static void dropCarry(Player player, Entity target) {
         target.teleport(player.getLocation());
 
     }
-
-
 }
