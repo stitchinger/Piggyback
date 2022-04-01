@@ -2,13 +2,13 @@ package io.georgeous.piggyback.util;
 
 import io.georgeous.piggyback.CarryCouple;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class DualMap {
-    public Map<Player, CarryCouple> carriers = new HashMap<>();
+    public Map<org.bukkit.entity.Player, CarryCouple> carriers = new HashMap<>();
     public Map<Entity, CarryCouple> carried = new HashMap<>();
 
     public DualMap() {
@@ -16,7 +16,7 @@ public class DualMap {
         carried = new HashMap<>();
     }
 
-    public CarryCouple get(Player player) {
+    public CarryCouple get(org.bukkit.entity.Player player) {
         return carriers.get(player);
     }
 
@@ -24,19 +24,19 @@ public class DualMap {
         return carried.get(entity);
     }
 
-    public void put(Player player, Entity entity, CarryCouple carryCouple) {
+    public void put(org.bukkit.entity.Player player, Entity entity, CarryCouple carryCouple) {
         carriers.put(player, carryCouple);
         carried.put(entity, carryCouple);
     }
 
-    public void remove(Player player) {
+    public void remove(org.bukkit.entity.Player player) {
         Entity target = carriers.get(player).getTarget();
         carried.remove(target);
         carriers.remove(player);
     }
 
     public void remove(Entity entity) {
-        Player player = carried.get(entity).getCarrier();
+        org.bukkit.entity.Player player = carried.get(entity).getCarrier();
         carriers.remove(player);
         carried.remove(entity);
     }

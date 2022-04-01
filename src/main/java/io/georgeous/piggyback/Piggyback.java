@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,7 +17,7 @@ import java.util.Map;
 public final class Piggyback extends JavaPlugin {
 
     public static DualMap carryCoupleMap = new DualMap();
-    private static final boolean NEED_ITEM = true;
+    private static final boolean NEED_ITEM = false;
     private static final String ITEM_NAME = "Baby-Handler";
 
 
@@ -27,7 +26,7 @@ public final class Piggyback extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CarryListener(this), this);
         getServer().getPluginCommand("carry").setExecutor(new CarryCommand());
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
             player.setInvulnerable(false);
         }
 
@@ -43,19 +42,19 @@ public final class Piggyback extends JavaPlugin {
     }
 
     public void carryUpdate() {
-        for (Map.Entry<Player, CarryCouple> entry : carryCoupleMap.carriers.entrySet()) {
+        for (Map.Entry<org.bukkit.entity.Player, CarryCouple> entry : carryCoupleMap.carriers.entrySet()) {
             entry.getValue().update();
         }
     }
 
     @Override
     public void onDisable() {
-        for (Map.Entry<Player, CarryCouple> entry : carryCoupleMap.carriers.entrySet()) {
+        for (Map.Entry<org.bukkit.entity.Player, CarryCouple> entry : carryCoupleMap.carriers.entrySet()) {
             stopCarry(entry.getKey());
         }
     }
 
-    public static boolean isProperItem(Player player) {
+    public static boolean isProperItem(org.bukkit.entity.Player player) {
         // Check for correct item in Hand
         if (!NEED_ITEM) {
             return true;
@@ -70,7 +69,7 @@ public final class Piggyback extends JavaPlugin {
         return properItem;
     }
 
-    public static void startCarry(Player player, Entity target) {
+    public static void startCarry(org.bukkit.entity.Player player, Entity target) {
         //target.setInvulnerable(true);
         CarryCouple carryCouple = new CarryCouple(target, player);
         carryCouple.start();
@@ -80,7 +79,7 @@ public final class Piggyback extends JavaPlugin {
     }
 
 
-    public static void stopCarry(Player player) {
+    public static void stopCarry(org.bukkit.entity.Player player) {
         CarryCouple carryCouple = carryCoupleMap.get(player);
         //carryCouple.getTarget().setInvulnerable(false);
 

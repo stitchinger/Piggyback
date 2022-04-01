@@ -2,13 +2,15 @@ package io.georgeous.piggyback.modes;
 
 import io.georgeous.piggyback.CarryCouple;
 import io.georgeous.piggyback.MyArmor;
-import net.minecraft.server.level.WorldServer;
-import net.minecraft.world.entity.decoration.EntityArmorStand;
+//import net.minecraft.server.level.WorldServer;
+import net.minecraft.server.level.ServerLevel;
+//import net.minecraft.world.entity.decoration.EntityArmorStand;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftArmorStand;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
@@ -64,8 +66,8 @@ public class PassengerMode extends CarryMode {
 
     private static ArmorStand createCarryInBetween(Player player) {
         MyArmor as = new MyArmor(player.getLocation(), player, false);
-        WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
-        world.addEntity(as);
+        ServerLevel world = ((CraftWorld) player.getWorld()).getHandle();
+        world.addFreshEntity(as);
 
         ArmorStand armorStand = (ArmorStand) Bukkit.getEntity(as.getBukkitEntity().getUniqueId());
         armorStand.setCanPickupItems(false);
@@ -88,7 +90,7 @@ public class PassengerMode extends CarryMode {
     }
 
     private static void killCarryInBetween(ArmorStand armorStand) {
-        EntityArmorStand a = ((CraftArmorStand) (armorStand)).getHandle();
+        net.minecraft.world.entity.decoration.ArmorStand a = ((CraftArmorStand) (armorStand)).getHandle();
         if (a instanceof MyArmor) {
             ((MyArmor) a).vanish();
         }

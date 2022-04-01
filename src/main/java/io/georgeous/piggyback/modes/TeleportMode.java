@@ -4,13 +4,12 @@ import io.georgeous.piggyback.CarryCouple;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class TeleportMode extends CarryMode {
 
     private CarryCouple cc;
-    private Player player;
+    private org.bukkit.entity.Player player;
     private Entity target;
     private ArmorStand carryInBetween;
     private Location lastLoc;
@@ -60,7 +59,7 @@ public class TeleportMode extends CarryMode {
         return hasSpaceAbove(player);
     }
 
-    private static void dropCarry(Player player, Entity target) {
+    private static void dropCarry(org.bukkit.entity.Player player, Entity target) {
         target.teleport(player.getLocation());
 
     }

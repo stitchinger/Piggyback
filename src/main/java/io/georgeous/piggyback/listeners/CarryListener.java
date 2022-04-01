@@ -6,7 +6,7 @@ import io.georgeous.piggyback.events.PlayerStopCarryEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -31,7 +31,7 @@ public class CarryListener implements Listener {
 
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
-        Player player = event.getPlayer();
+        org.bukkit.entity.Player player = event.getPlayer();
         Entity target = null;
         List<Entity> entities = Bukkit.getServer().selectEntities(player, "@e[name=!" + player.getName() + ",type=!boat, sort=nearest,limit=1,tag=!surrogate,distance=..2]");
         if (entities.size() > 0) {
@@ -81,10 +81,10 @@ public class CarryListener implements Listener {
 
     @EventHandler
     public void vehicleExit(VehicleExitEvent event) {
-        if (event.getVehicle() instanceof Player) {
+        if (event.getVehicle() instanceof org.bukkit.entity.Player) {
             event.getVehicle().sendMessage("Vehicle Exit");
         }
-        if (event.getVehicle() instanceof Player || event.getVehicle().getScoreboardTags().contains("carryhelper")) {
+        if (event.getVehicle() instanceof org.bukkit.entity.Player || event.getVehicle().getScoreboardTags().contains("carryhelper")) {
             event.setCancelled(true);
         }
     }
@@ -106,7 +106,7 @@ public class CarryListener implements Listener {
         if (Piggyback.carryCoupleMap.get(event.getPlayer()) == null) {
             return;
         }
-        Player player = event.getPlayer();
+        org.bukkit.entity.Player player = event.getPlayer();
         Piggyback.stopCarry(player);
     }
 
@@ -115,7 +115,7 @@ public class CarryListener implements Listener {
         if (Piggyback.carryCoupleMap.get(event.getEntity()) == null) {
             return;
         }
-        Player player = event.getEntity();
+        org.bukkit.entity.Player player = event.getEntity();
         Piggyback.stopCarry(player);
     }
 }

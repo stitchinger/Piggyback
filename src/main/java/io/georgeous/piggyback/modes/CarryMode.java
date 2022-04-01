@@ -2,7 +2,7 @@ package io.georgeous.piggyback.modes;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public abstract class CarryMode {
         return false;
     }
 
-    public boolean hasSpaceAbove(Player player) {
+    public boolean hasSpaceAbove(org.bukkit.entity.Player player) {
         List<Location> locs = new ArrayList<>();
 
         locs.add(player.getLocation().clone().add(0, 2, 0));
@@ -32,7 +32,7 @@ public abstract class CarryMode {
         return value;
     }
 
-    public boolean hasSpaceAboveOld(Player player) {
+    public boolean hasSpaceAboveOld(org.bukkit.entity.Player player) {
         List<Location> locs = new ArrayList<>();
         locs.add(player.getLocation().clone().add(-1, 2, -1));
         locs.add(player.getLocation().clone().add(-1, 2, 0));
