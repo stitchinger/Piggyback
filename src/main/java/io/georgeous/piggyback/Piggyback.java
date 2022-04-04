@@ -3,13 +3,12 @@ package io.georgeous.piggyback;
 import io.georgeous.piggyback.commands.CarryCommand;
 import io.georgeous.piggyback.listeners.CarryListener;
 import io.georgeous.piggyback.util.DualMap;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.Map;
 
@@ -89,8 +88,17 @@ public final class Piggyback extends JavaPlugin {
     }
 
     public static void startCarryEffects(Location pos) {
-        pos.getWorld().playSound(pos, Sound.ITEM_ARMOR_EQUIP_TURTLE, 1, 1);
-        //world.spawnParticle(Particle.BLOCK_DUST, pos, 5, 0.5, 0.5, 0.5);
+        World world = pos.getWorld();
+        world.playSound(pos, Sound.ITEM_ARMOR_EQUIP_TURTLE, 1, 1);
+        //particle minecraft:cloud ^1 ^2 ^ 0.1 0.1 0.1 0.05 10 normal @p
+        //particle minecraft:poof ^ ^2 ^ 0.2 0.2 0.2 0.03 100 normal @p
+        //world.spawnParticle(Particle.BLOCK, pos, 20, 0.5, 0.5, 0.5);
+        //world.spawnParticle(Particle.CLOUD, pos, 100, 0.2,0.2,0.2);
+
+        //world.spawnParticle(Particle.CLOUD, pos, 100, 0.1,0.1,0.1);
+        //Vector vel = new Vector(loc2.getX() - loc.getX(), loc2.getY() - loc.getY(), loc2.getZ() - loc.getZ());
+        //world.spawnParticle(Particle.FLAME, loc, 0, vel.getX(), vel.getY(), vel.getZ(), 0.05);
+
     }
 
     public static void stopCarryEffects(Location pos) {

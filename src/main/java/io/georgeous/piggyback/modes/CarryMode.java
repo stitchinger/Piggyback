@@ -61,7 +61,7 @@ public abstract class CarryMode {
         return value;
     }
 
-    public boolean noBlockThere(Location loc) {
+    private boolean noBlockThere(Location loc) {
         return loc.getBlock().getBlockData().getMaterial() == Material.AIR;
     }
 }

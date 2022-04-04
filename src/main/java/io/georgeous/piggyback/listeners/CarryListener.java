@@ -65,9 +65,9 @@ public class CarryListener implements Listener {
     @EventHandler
     public void disableSuffocationDamage(EntityDamageEvent event) {
         if (!(Piggyback.carryCoupleMap.carried.containsKey(event.getEntity())))
-            return;
+            return; // Damaged Entity is not carried
         if (!(event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)))
-            return;
+            return; // Damage not caused by suffocation
 
         event.setCancelled(true);
     }

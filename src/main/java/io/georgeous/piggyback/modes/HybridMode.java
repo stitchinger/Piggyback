@@ -76,7 +76,7 @@ public class HybridMode extends CarryMode {
             //player.addPassenger(carryInBetween);
         }
         if (!carryInBetween.getPassengers().contains(target)) {
-            carryInBetween.addPassenger(target);
+            //carryInBetween.addPassenger(target);
         }
     }
 
@@ -86,6 +86,7 @@ public class HybridMode extends CarryMode {
         world.addFreshEntity(as);
 
         ArmorStand armorStand = (ArmorStand) Bukkit.getEntity(as.getBukkitEntity().getUniqueId());
+
 
         return armorStand;
     }

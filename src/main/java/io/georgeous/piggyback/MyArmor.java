@@ -22,6 +22,7 @@ import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 public class MyArmor extends ArmorStand {
 
     private org.bukkit.entity.Player player;
+    private Location lastPlayerLocation;
     private boolean followMode;
     private Location lastLoc;
 
@@ -31,8 +32,9 @@ public class MyArmor extends ArmorStand {
         this.followMode = followMode;
         this.lastLoc = new Location(player.getWorld(), 0, 0, 0);
 
+        this.lastPlayerLocation = loc;
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
-        this.setNoGravity(true);
+        this.setNoGravity(false);
         this.setInvisible(true);
         this.setInvulnerable(true);
         this.setSmall(true);
@@ -41,8 +43,47 @@ public class MyArmor extends ArmorStand {
         this.addTag("carryhelper");
     }
 
+
+    public double getPassengersRidingOffset() {
+        //return (double)this.super..dimensions.height * 0.75D;
+        return 10.0D;
+    }
+
+    public boolean rideableUnderWater() {
+        return true;
+    }
+
+
+
     @Override
     public void tick() {
+        super.tick();
+        this.refreshDimensions();
+
+
+        Location myLocation = new Location(player.getWorld(), this.getX(), this.getY(), this.getZ());
+        Location playerLocation = player.getLocation();
+        Location destination = myLocation;
+        double distance = playerLocation.distance(myLocation);
+        double minDistance = 2;
+        if(lastPlayerLocation.getBlock() != playerLocation.getBlock()){
+            destination = lastPlayerLocation.getBlock().getLocation().add(0.5,0,0.5);
+        }
+
+        //Location movement = myLocation.add(destination.multiply(0.1));
+        Location movement = myLocation.clone().add(destination.clone().subtract(myLocation).multiply(0.1));
+
+
+        if (distance > minDistance) {
+            this.setPos(movement.getX(), movement.getY(), movement.getZ());
+        }
+
+        lastPlayerLocation = playerLocation;
+
+    }
+
+
+    public void oldtick() {
         super.tick();
         this.refreshDimensions();
 
@@ -57,6 +98,7 @@ public class MyArmor extends ArmorStand {
             double distance = player.getLocation().distance(myLocation);
 
             if (distance > minDistance) {
+
                 destination = player.getLocation().subtract(difference.toVector().normalize().multiply(2));
                 destination.setY(player.getLocation().getY());
             }
