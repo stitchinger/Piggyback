@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Map;
+import java.util.Objects;
 
 
 public final class Piggyback extends JavaPlugin {
@@ -22,9 +23,10 @@ public final class Piggyback extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new CarryListener(this), this);
-        getServer().getPluginCommand("carry").setExecutor(new CarryCommand());
+        getServer().getPluginManager().registerEvents(new CarryListener(), this);
+        Objects.requireNonNull(getServer().getPluginCommand("carry")).setExecutor(new CarryCommand());
 
+        // Set all players to vulnerable just in case
         for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
             player.setInvulnerable(false);
         }
@@ -89,7 +91,7 @@ public final class Piggyback extends JavaPlugin {
 
     public static void startCarryEffects(Location pos) {
         World world = pos.getWorld();
-        world.playSound(pos, Sound.ITEM_ARMOR_EQUIP_TURTLE, 1, 1);
+        Objects.requireNonNull(world).playSound(pos, Sound.ITEM_ARMOR_EQUIP_TURTLE, 1, 1);
         //particle minecraft:cloud ^1 ^2 ^ 0.1 0.1 0.1 0.05 10 normal @p
         //particle minecraft:poof ^ ^2 ^ 0.2 0.2 0.2 0.03 100 normal @p
         //world.spawnParticle(Particle.BLOCK, pos, 20, 0.5, 0.5, 0.5);
@@ -102,7 +104,7 @@ public final class Piggyback extends JavaPlugin {
     }
 
     public static void stopCarryEffects(Location pos) {
-        pos.getWorld().playSound(pos, Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1, 1);
+        Objects.requireNonNull(pos.getWorld()).playSound(pos, Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1, 1);
     }
 
 }

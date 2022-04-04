@@ -6,7 +6,6 @@ import io.georgeous.piggyback.events.PlayerStopCarryEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -17,17 +16,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
-
 import java.util.List;
 
-
 public class CarryListener implements Listener {
-
-    private final Piggyback plugin;
-
-    public CarryListener(Piggyback plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {

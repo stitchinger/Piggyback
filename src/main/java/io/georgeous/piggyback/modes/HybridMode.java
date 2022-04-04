@@ -13,20 +13,14 @@ import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 public class HybridMode extends CarryMode {
-
-    private CarryCouple cc;
-    private Player player;
-    private Entity target;
+    private final Player player;
+    private final Entity target;
     private ArmorStand carryInBetween;
 
-    private long spaceAboveTime = 0;
-    private long lastTime;
 
     public HybridMode(CarryCouple cc) {
-        this.cc = cc;
         this.player = cc.getCarrier();
         this.target = cc.getTarget();
-        this.lastTime = System.currentTimeMillis();
     }
 
     @Override
@@ -49,46 +43,15 @@ public class HybridMode extends CarryMode {
 
     @Override
     public void update() {
-        avoidWaterDismount();
 
-        if (hasSpaceAbove(player)) {
-            spaceAboveTime = spaceAboveTime + (System.currentTimeMillis() - lastTime);
-        } else {
-            spaceAboveTime = 0;
-        }
-        lastTime = System.currentTimeMillis();
-
-        // toggle mode if necessary
-        if (toggleConditionTrue()) {
-            ((MyArmor) ((CraftEntity) carryInBetween).getHandle()).setFollowMode(false);
-        } else {
-            ((MyArmor) ((CraftEntity) carryInBetween).getHandle()).setFollowMode(true);
-        }
-    }
-
-    @Override
-    public boolean toggleConditionTrue() {
-        return hasSpaceAbove(player) && spaceAboveTime >= 2000;
-    }
-
-    private void avoidWaterDismount() {
-        if (!player.getPassengers().contains(carryInBetween)) {
-            //player.addPassenger(carryInBetween);
-        }
-        if (!carryInBetween.getPassengers().contains(target)) {
-            //carryInBetween.addPassenger(target);
-        }
     }
 
     private static ArmorStand createCarryInBetween(Player player) {
-        MyArmor as = new MyArmor(player.getLocation(), player, true);
+        MyArmor as = new MyArmor(player.getLocation(), player);
         ServerLevel world = ((CraftWorld) player.getWorld()).getHandle();
         world.addFreshEntity(as);
 
-        ArmorStand armorStand = (ArmorStand) Bukkit.getEntity(as.getBukkitEntity().getUniqueId());
-
-
-        return armorStand;
+        return (ArmorStand) Bukkit.getEntity(as.getBukkitEntity().getUniqueId());
     }
 
     private static void dropCarry(Player player, Entity target) {
