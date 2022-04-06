@@ -79,7 +79,6 @@ public final class Piggyback extends JavaPlugin {
         startCarryEffects(target.getLocation());
     }
 
-
     public static void stopCarry(org.bukkit.entity.Player player) {
         CarryCouple carryCouple = carryCoupleMap.get(player);
         //carryCouple.getTarget().setInvulnerable(false);
@@ -95,7 +94,7 @@ public final class Piggyback extends JavaPlugin {
         //particle minecraft:cloud ^1 ^2 ^ 0.1 0.1 0.1 0.05 10 normal @p
         //particle minecraft:poof ^ ^2 ^ 0.2 0.2 0.2 0.03 100 normal @p
         //world.spawnParticle(Particle.BLOCK, pos, 20, 0.5, 0.5, 0.5);
-        //world.spawnParticle(Particle.CLOUD, pos, 100, 0.2,0.2,0.2);
+        world.spawnParticle(Particle.CLOUD, pos, 100, 0.2,0.2,0.2);
 
         //world.spawnParticle(Particle.CLOUD, pos, 100, 0.1,0.1,0.1);
         //Vector vel = new Vector(loc2.getX() - loc.getX(), loc2.getY() - loc.getY(), loc2.getZ() - loc.getZ());

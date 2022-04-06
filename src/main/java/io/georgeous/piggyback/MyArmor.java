@@ -1,5 +1,7 @@
 package io.georgeous.piggyback;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -10,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 
@@ -71,6 +74,12 @@ public class MyArmor extends ArmorStand {
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity entityliving) {
         return new Vec3(this.getX(), this.getBoundingBox().maxY, this.getZ());
+    }
+
+
+    @Nullable
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ARMOR_STAND_BREAK;
     }
 
     @Override
