@@ -4,11 +4,11 @@ import io.georgeous.piggyback.commands.CarryCommand;
 import io.georgeous.piggyback.listeners.CarryListener;
 import io.georgeous.piggyback.util.DualMap;
 import org.bukkit.*;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.Map;
 import java.util.Objects;
@@ -17,7 +17,7 @@ import java.util.Objects;
 public final class Piggyback extends JavaPlugin {
 
     public static DualMap carryCoupleMap = new DualMap();
-    private static final boolean NEED_ITEM = false;
+    private static final boolean NEED_ITEM = true;
     private static final String ITEM_NAME = "Baby-Handler";
 
 
@@ -76,7 +76,7 @@ public final class Piggyback extends JavaPlugin {
         carryCouple.start();
 
         carryCoupleMap.put(player, target, carryCouple);
-        startCarryEffects(target.getLocation());
+        startCarryEffects(target.getLocation().clone().add(0, target.getBoundingBox().getHeight() / 2, 0));
     }
 
     public static void stopCarry(org.bukkit.entity.Player player) {
@@ -85,25 +85,25 @@ public final class Piggyback extends JavaPlugin {
 
         carryCouple.stop();
         carryCoupleMap.remove(player);
-        stopCarryEffects(player.getLocation());
+        stopCarryEffects(carryCouple.getTarget().getLocation().clone().add(0, carryCouple.getTarget().getBoundingBox().getHeight() / 2, 0));
     }
 
     public static void startCarryEffects(Location pos) {
         World world = pos.getWorld();
         Objects.requireNonNull(world).playSound(pos, Sound.ITEM_ARMOR_EQUIP_TURTLE, 1, 1);
-        //particle minecraft:cloud ^1 ^2 ^ 0.1 0.1 0.1 0.05 10 normal @p
-        //particle minecraft:poof ^ ^2 ^ 0.2 0.2 0.2 0.03 100 normal @p
-        //world.spawnParticle(Particle.BLOCK, pos, 20, 0.5, 0.5, 0.5);
-        world.spawnParticle(Particle.CLOUD, pos, 100, 0.2,0.2,0.2);
 
-        //world.spawnParticle(Particle.CLOUD, pos, 100, 0.1,0.1,0.1);
-        //Vector vel = new Vector(loc2.getX() - loc.getX(), loc2.getY() - loc.getY(), loc2.getZ() - loc.getZ());
-        //world.spawnParticle(Particle.FLAME, loc, 0, vel.getX(), vel.getY(), vel.getZ(), 0.05);
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        String command = "particle minecraft:cloud " + pos.getX() + " "  + pos.getY() + " " + pos.getZ() + " 0.5 0.5 0.5 0.01 70 normal";
+        Bukkit.dispatchCommand(console, command);
 
     }
 
     public static void stopCarryEffects(Location pos) {
         Objects.requireNonNull(pos.getWorld()).playSound(pos, Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1, 1);
+
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        String command = "particle minecraft:cloud " + pos.getX() + " "  + pos.getY() + " " + pos.getZ() + " 0.5 0.5 0.5 0.01 70 normal";
+        Bukkit.dispatchCommand(console, command);
     }
 
 }

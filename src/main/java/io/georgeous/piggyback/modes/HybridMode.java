@@ -1,21 +1,20 @@
 package io.georgeous.piggyback.modes;
 
 import io.georgeous.piggyback.CarryCouple;
-import io.georgeous.piggyback.MyArmor;
+import io.georgeous.piggyback.CarryMob;
 import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftArmorStand;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_18_R2.entity.*;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
 
 public class HybridMode extends CarryMode {
     private final Player player;
     private final Entity target;
-    private ArmorStand carryInBetween;
+    private Wolf carryInBetween;
 
 
     public HybridMode(CarryCouple cc) {
@@ -25,20 +24,23 @@ public class HybridMode extends CarryMode {
 
     @Override
     public void start() {
-        carryInBetween = createCarryInBetween(player);
+        carryInBetween = createCarryInBetween(player, target);
+        carryInBetween.setOwner(player);
         carryInBetween.addPassenger(target);
     }
 
     @Override
     public void stop() {
-        for (Entity passenger : player.getPassengers()) {
-            player.removePassenger(passenger);
-        }
-        for (Entity passenger : carryInBetween.getPassengers()) {
-            player.removePassenger(passenger);
-        }
+
+        carryInBetween.getPassengers().forEach(passenger -> {
+            if(carryInBetween.removePassenger(passenger)){
+                //player.sendMessage("True");
+            }else{
+                //player.sendMessage("False");
+            }
+        });
+
         killCarryInBetween(carryInBetween);
-        dropCarry(player, target);
     }
 
     @Override
@@ -46,12 +48,12 @@ public class HybridMode extends CarryMode {
 
     }
 
-    private static ArmorStand createCarryInBetween(Player player) {
-        MyArmor as = new MyArmor(player.getLocation(), player);
+    private static Wolf createCarryInBetween(Player player, Entity target) {
+        CarryMob as = new CarryMob(target.getLocation(), player);
         ServerLevel world = ((CraftWorld) player.getWorld()).getHandle();
         world.addFreshEntity(as);
 
-        return (ArmorStand) Bukkit.getEntity(as.getBukkitEntity().getUniqueId());
+        return (Wolf) Bukkit.getEntity(as.getBukkitEntity().getUniqueId());
     }
 
     private static void dropCarry(Player player, Entity target) {
@@ -72,10 +74,12 @@ public class HybridMode extends CarryMode {
         }
     }
 
-    private static void killCarryInBetween(ArmorStand armorStand) {
-        net.minecraft.world.entity.decoration.ArmorStand a = ((CraftArmorStand) (armorStand)).getHandle();
-        if (a instanceof MyArmor) {
-            ((MyArmor) a).vanish();
+    private static void killCarryInBetween(Wolf armorStand) {
+        Location tp = new Location(armorStand.getWorld(), armorStand.getLocation().getX(), 1.0d, armorStand.getLocation().getZ());
+        armorStand.teleport(tp);
+        net.minecraft.world.entity.animal.Wolf a = ((CraftWolf) (armorStand)).getHandle();
+        if (a instanceof CarryMob) {
+            ((CarryMob) a).vanish();
         }
     }
 }

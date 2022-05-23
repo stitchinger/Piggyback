@@ -73,10 +73,10 @@ public class CarryListener implements Listener {
     @EventHandler
     public void vehicleExit(VehicleExitEvent event) {
         if (event.getVehicle() instanceof org.bukkit.entity.Player) {
-            event.getVehicle().sendMessage("Vehicle Exit");
+           // event.getVehicle().sendMessage("Vehicle Exit");
         }
         if (event.getVehicle() instanceof org.bukkit.entity.Player || event.getVehicle().getScoreboardTags().contains("carryhelper")) {
-            event.setCancelled(true);
+           // event.setCancelled(true);
         }
     }
 
