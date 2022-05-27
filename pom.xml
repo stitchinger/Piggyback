@@ -32,7 +32,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <outputDirectory>/Users/georg/Buildtools/plugins</outputDirectory>
+                    <outputDirectory>/Users/georg/Development/Buildtools/plugins</outputDirectory>
                     <finalName>Piggyback</finalName>
                 </configuration>
             </plugin>

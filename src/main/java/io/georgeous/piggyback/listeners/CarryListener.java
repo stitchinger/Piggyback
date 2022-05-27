@@ -6,6 +6,7 @@ import io.georgeous.piggyback.events.PlayerStopCarryEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -60,14 +61,30 @@ public class CarryListener implements Listener {
         if (!(event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)))
             return; // Damage not caused by suffocation
 
+        /*
+        if(event.getEntity().carryDropTime + timeOfInvulAfterCarry < System.currentTimeMillis() ){
+            return;
+        }
+        */
+
+
         event.setCancelled(true);
     }
 
     @EventHandler
     public void disableDismount(EntityDismountEvent event) {
-        if (Piggyback.carryCoupleMap.isCarried(event.getEntity())) {
-            event.setCancelled(true);
-        }
+        if (!Piggyback.carryCoupleMap.isCarried(event.getEntity()))
+            return;
+
+        if(!(event.getEntity() instanceof Player player))
+            return;
+
+        if(!player.isSneaking())
+            return;
+
+        event.setCancelled(true);
+
+        return;
     }
 
     @EventHandler

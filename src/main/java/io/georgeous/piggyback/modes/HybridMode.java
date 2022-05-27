@@ -33,11 +33,10 @@ public class HybridMode extends CarryMode {
     public void stop() {
 
         carryInBetween.getPassengers().forEach(passenger -> {
-            if(carryInBetween.removePassenger(passenger)){
-                //player.sendMessage("True");
-            }else{
-                //player.sendMessage("False");
-            }
+            System.out.println(passenger.toString());
+            carryInBetween.removePassenger(passenger);
+            passenger.teleport(carryInBetween.getLocation());
+
         });
 
         killCarryInBetween(carryInBetween);

@@ -34,7 +34,7 @@ public class CarryMob extends Wolf {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 2D, 2.0F, 1.0F, true));
+        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.4D, 3.0F, 1.5F, true));
         // Todo Faster Swimming
 
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
