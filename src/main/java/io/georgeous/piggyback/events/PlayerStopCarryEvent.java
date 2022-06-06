@@ -16,7 +16,7 @@ public class PlayerStopCarryEvent extends Event implements Cancellable {
 
     public PlayerStopCarryEvent(org.bukkit.entity.Player player) {
         this.player = player;
-        this.target = Piggyback.carryCoupleMap.get(this.player).getTarget();
+        this.target = Piggyback.carryCoupleMap.getCCFromCarrierPlayer(this.player).getTarget();
     }
 
     public org.bukkit.entity.Player getPlayer() {

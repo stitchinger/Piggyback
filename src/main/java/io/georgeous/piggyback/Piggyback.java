@@ -80,7 +80,7 @@ public final class Piggyback extends JavaPlugin {
     }
 
     public static void stopCarry(org.bukkit.entity.Player player) {
-        CarryCouple carryCouple = carryCoupleMap.get(player);
+        CarryCouple carryCouple = carryCoupleMap.getCCFromCarrierPlayer(player);
         //carryCouple.getTarget().setInvulnerable(false);
 
         carryCouple.stop();

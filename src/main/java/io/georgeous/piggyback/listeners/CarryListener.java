@@ -1,12 +1,11 @@
 package io.georgeous.piggyback.listeners;
 
+import io.georgeous.piggyback.CarryCouple;
 import io.georgeous.piggyback.Piggyback;
 import io.georgeous.piggyback.events.PlayerStartCarryEvent;
 import io.georgeous.piggyback.events.PlayerStopCarryEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -35,7 +34,7 @@ public class CarryListener implements Listener {
             return;
         }
 
-        if (Piggyback.carryCoupleMap.get(player) == null) {
+        if (Piggyback.carryCoupleMap.getCCFromCarrierPlayer(player) == null) {
             if (target == null) {
                 return;
             }
@@ -60,13 +59,6 @@ public class CarryListener implements Listener {
             return; // Damaged Entity is not carried
         if (!(event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)))
             return; // Damage not caused by suffocation
-
-        /*
-        if(event.getEntity().carryDropTime + timeOfInvulAfterCarry < System.currentTimeMillis() ){
-            return;
-        }
-        */
-
 
         event.setCancelled(true);
     }
@@ -111,19 +103,48 @@ public class CarryListener implements Listener {
 
     @EventHandler
     public void playerQuit(PlayerQuitEvent event) {
-        if (Piggyback.carryCoupleMap.get(event.getPlayer()) == null) {
+        CarryCouple carrierCC = Piggyback.carryCoupleMap.getCCFromCarrierPlayer(event.getPlayer());
+        if (carrierCC != null) {
+            Piggyback.stopCarry(carrierCC.getCarrier());
             return;
         }
-        org.bukkit.entity.Player player = event.getPlayer();
-        Piggyback.stopCarry(player);
+        CarryCouple carriedCC = Piggyback.carryCoupleMap.getCCFromCarriedEntity(event.getPlayer());
+        if (carriedCC != null) {
+            Piggyback.stopCarry(carriedCC.getCarrier());
+            return;
+        }
     }
 
     @EventHandler
     public void playerDeath(PlayerDeathEvent event) {
-        if (Piggyback.carryCoupleMap.get(event.getEntity()) == null) {
+        CarryCouple carrierCC = Piggyback.carryCoupleMap.getCCFromCarrierPlayer(event.getEntity());
+        if (carrierCC != null) {
+            Piggyback.stopCarry(carrierCC.getCarrier());
             return;
         }
-        org.bukkit.entity.Player player = event.getEntity();
-        Piggyback.stopCarry(player);
+        CarryCouple carriedCC = Piggyback.carryCoupleMap.getCCFromCarriedEntity(event.getEntity());
+        if (carriedCC != null) {
+            Piggyback.stopCarry(carriedCC.getCarrier());
+            return;
+        }
     }
+
+    @EventHandler
+    public void onCarryHelperDeath(EntityDamageEvent event) {
+        Entity e = event.getEntity();
+        if(!(e.getScoreboardTags().contains("carryhelper"))){
+            return;
+        }
+
+        if(event.getDamage() < ((LivingEntity)e).getHealth()){
+            return;
+        }
+
+        if (!(e instanceof Tameable tameable))
+            return;
+
+        tameable.setOwner(null);
+    }
+
+
 }

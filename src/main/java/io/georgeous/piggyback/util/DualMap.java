@@ -16,11 +16,11 @@ public class DualMap {
         carried = new HashMap<>();
     }
 
-    public CarryCouple get(org.bukkit.entity.Player player) {
+    public CarryCouple getCCFromCarrierPlayer(org.bukkit.entity.Player player) {
         return carriers.get(player);
     }
 
-    public CarryCouple get(Entity entity) {
+    public CarryCouple getCCFromCarriedEntity(Entity entity) {
         return carried.get(entity);
     }
 
