@@ -9,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.entity.*;
 import org.bukkit.entity.*;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 public class HybridMode extends CarryMode {
@@ -26,6 +28,8 @@ public class HybridMode extends CarryMode {
     public void start() {
         carryInBetween = createCarryInBetween(player, target);
         carryInBetween.setOwner(player);
+        PotionEffect dolphin = new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 999999999,20, false, false, false);
+        carryInBetween.addPotionEffect(dolphin);
         carryInBetween.addPassenger(target);
     }
 
