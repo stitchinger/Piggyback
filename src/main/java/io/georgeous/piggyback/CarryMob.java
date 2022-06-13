@@ -41,7 +41,7 @@ public class CarryMob extends Wolf {
 
         // Todo Faster Swimming
 
-        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
     }
 
     //@Override
