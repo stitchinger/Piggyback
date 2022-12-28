@@ -1,7 +1,7 @@
 package io.georgeous.piggyback.modes;
 
 import io.georgeous.piggyback.CarryCouple;
-import io.georgeous.piggyback.CarryMob;
+import io.georgeous.piggyback.Sven;
 import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,7 +16,7 @@ import org.bukkit.util.Vector;
 public class HybridMode extends CarryMode {
     private final Player player;
     private final Entity target;
-    private Wolf carryInBetween;
+    private Wolf sven;
 
 
     public HybridMode(CarryCouple cc) {
@@ -26,24 +26,23 @@ public class HybridMode extends CarryMode {
 
     @Override
     public void start() {
-        carryInBetween = createCarryInBetween(player, target);
-        carryInBetween.setOwner(player);
+        sven = createCarryInBetween(player, target);
+        sven.setOwner(player);
         PotionEffect dolphin = new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 999999999,20, false, false, false);
-        carryInBetween.addPotionEffect(dolphin);
-        carryInBetween.addPassenger(target);
+        sven.addPotionEffect(dolphin);
+        sven.addPassenger(target);
     }
 
     @Override
     public void stop() {
 
-        carryInBetween.getPassengers().forEach(passenger -> {
+        sven.getPassengers().forEach(passenger -> {
             System.out.println(passenger.toString());
-            carryInBetween.removePassenger(passenger);
-            passenger.teleport(carryInBetween.getLocation());
-
+            sven.removePassenger(passenger);
+            passenger.teleport(sven.getLocation());
         });
 
-        killCarryInBetween(carryInBetween);
+        killCarryMob(sven);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class HybridMode extends CarryMode {
     }
 
     private static Wolf createCarryInBetween(Player player, Entity target) {
-        CarryMob as = new CarryMob(target.getLocation(), player);
+        Sven as = new Sven(target.getLocation(), player);
         ServerLevel world = ((CraftWorld) player.getWorld()).getHandle();
         world.addFreshEntity(as);
 
@@ -77,12 +76,12 @@ public class HybridMode extends CarryMode {
         }
     }
 
-    private static void killCarryInBetween(Wolf armorStand) {
+    private static void killCarryMob(Wolf armorStand) {
         Location tp = new Location(armorStand.getWorld(), armorStand.getLocation().getX(), 1.0d, armorStand.getLocation().getZ());
         armorStand.teleport(tp);
         net.minecraft.world.entity.animal.Wolf a = ((CraftWolf) (armorStand)).getHandle();
-        if (a instanceof CarryMob) {
-            ((CarryMob) a).vanish();
+        if (a instanceof Sven) {
+            ((Sven) a).vanish();
         }
     }
 }
