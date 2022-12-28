@@ -6,9 +6,8 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
+
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
