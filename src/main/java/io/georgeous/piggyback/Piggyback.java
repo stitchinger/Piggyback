@@ -2,10 +2,7 @@ package io.georgeous.piggyback;
 
 import io.georgeous.piggyback.listeners.CarryListener;
 import io.georgeous.piggyback.util.DualMap;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -56,18 +53,13 @@ public final class Piggyback extends JavaPlugin {
     public static void startCarryEffects(Location pos) {
         World world = pos.getWorld();
         Objects.requireNonNull(world).playSound(pos, Sound.ITEM_ARMOR_EQUIP_TURTLE, 1, 1);
-
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-        String command = "particle minecraft:cloud " + pos.getX() + " " + pos.getY() + " " + pos.getZ() + " 0.5 0.5 0.5 0.01 70 normal";
-        Bukkit.dispatchCommand(console, command);
+        world.spawnParticle(Particle.CLOUD, pos, 50, 0.5, 0.5, 0.5, 0.0);
     }
 
     public static void stopCarryEffects(Location pos) {
+        World world = pos.getWorld();
         Objects.requireNonNull(pos.getWorld()).playSound(pos, Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1, 1);
-
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-        String command = "particle minecraft:cloud " + pos.getX() + " " + pos.getY() + " " + pos.getZ() + " 0.5 0.5 0.5 0.01 70 normal";
-        Bukkit.dispatchCommand(console, command);
+        world.spawnParticle(Particle.CLOUD, pos, 50, 0.5, 0.5, 0.5, 0.0);
     }
 
     @Override

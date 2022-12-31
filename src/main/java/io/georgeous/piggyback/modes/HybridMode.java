@@ -1,6 +1,7 @@
 package io.georgeous.piggyback.modes;
 
 import io.georgeous.piggyback.CarryCouple;
+import io.georgeous.piggyback.Piggyback;
 import io.georgeous.piggyback.Sven;
 import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import org.bukkit.craftbukkit.v1_19_R1.entity.*;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class HybridMode extends CarryMode {
@@ -76,12 +78,14 @@ public class HybridMode extends CarryMode {
         }
     }
 
-    private static void killCarryMob(Wolf armorStand) {
-        Location tp = new Location(armorStand.getWorld(), armorStand.getLocation().getX(), 1.0d, armorStand.getLocation().getZ());
-        armorStand.teleport(tp);
-        net.minecraft.world.entity.animal.Wolf a = ((CraftWolf) (armorStand)).getHandle();
+    private static void killCarryMob(Wolf wolf) {
+        Location tp = new Location(wolf.getWorld(), wolf.getLocation().getX(), 1.0d, wolf.getLocation().getZ());
+        wolf.teleport(tp);
+        wolf.setInvisible(true);
+        net.minecraft.world.entity.animal.Wolf a = ((CraftWolf) (wolf)).getHandle();
         if (a instanceof Sven) {
             ((Sven) a).vanish();
         }
+
     }
 }
