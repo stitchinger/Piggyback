@@ -37,9 +37,7 @@ public class HybridMode extends CarryMode {
 
     @Override
     public void stop() {
-
         sven.getPassengers().forEach(passenger -> {
-            System.out.println(passenger.toString());
             sven.removePassenger(passenger);
             passenger.teleport(sven.getLocation());
         });
