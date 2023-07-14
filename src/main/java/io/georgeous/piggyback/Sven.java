@@ -7,21 +7,16 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 
 import java.util.Objects;
 
 
 public class Sven extends Wolf {
 
-    private final org.bukkit.entity.Player player;
-    private Location lastPlayerLocation;
-
     public Sven(Location loc, org.bukkit.entity.Player player) {
         super(EntityType.WOLF, ((CraftWorld) Objects.requireNonNull(loc.getWorld())).getHandle());
-        this.player = player;
         this.setHealth(20);
-        this.lastPlayerLocation = loc;
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
         this.setInvulnerable(true);
         this.addTag("carryhelper");

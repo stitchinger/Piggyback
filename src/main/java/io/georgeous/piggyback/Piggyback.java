@@ -3,7 +3,6 @@ package io.georgeous.piggyback;
 import io.georgeous.piggyback.listeners.CarryListener;
 import io.georgeous.piggyback.util.DualMap;
 import org.bukkit.*;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -59,7 +58,7 @@ public final class Piggyback extends JavaPlugin {
     public static void stopCarryEffects(Location pos) {
         World world = pos.getWorld();
         Objects.requireNonNull(pos.getWorld()).playSound(pos, Sound.ITEM_ARMOR_EQUIP_ELYTRA, 1, 1);
-        world.spawnParticle(Particle.CLOUD, pos, 50, 0.5, 0.5, 0.5, 0.0);
+        Objects.requireNonNull(world).spawnParticle(Particle.CLOUD, pos, 50, 0.5, 0.5, 0.5, 0.0);
     }
 
     @Override
