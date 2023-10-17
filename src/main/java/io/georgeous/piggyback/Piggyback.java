@@ -1,6 +1,7 @@
 package io.georgeous.piggyback;
 
 import io.georgeous.piggyback.listeners.CarryListener;
+import io.georgeous.piggyback.listeners.WolfTeleportListener;
 import io.georgeous.piggyback.util.DualMap;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -64,6 +65,7 @@ public final class Piggyback extends JavaPlugin {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new CarryListener(), this);
+        getServer().getPluginManager().registerEvents(new WolfTeleportListener(), this);
 
         // Set all players to vulnerable just in case
         for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
