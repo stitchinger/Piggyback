@@ -9,13 +9,11 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleExitEvent;
-import org.spigotmc.event.entity.EntityDismountEvent;
+
 import java.util.List;
 
 public class CarryListener implements Listener {
@@ -68,25 +66,13 @@ public class CarryListener implements Listener {
         if (!Piggyback.carryCoupleMap.isCarried(event.getEntity()))
             return;
 
-        if(!(event.getEntity() instanceof Player player))
+        if (!(event.getEntity() instanceof Player player))
             return;
 
-        if(!player.isSneaking())
+        if (!player.isSneaking())
             return;
 
         event.setCancelled(true);
-
-        return;
-    }
-
-    @EventHandler
-    public void vehicleExit(VehicleExitEvent event) {
-        if (event.getVehicle() instanceof org.bukkit.entity.Player) {
-           // event.getVehicle().sendMessage("Vehicle Exit");
-        }
-        if (event.getVehicle() instanceof org.bukkit.entity.Player || event.getVehicle().getScoreboardTags().contains("carryhelper")) {
-           // event.setCancelled(true);
-        }
     }
 
     @EventHandler
@@ -132,11 +118,11 @@ public class CarryListener implements Listener {
     @EventHandler
     public void onCarryHelperDeath(EntityDamageEvent event) {
         Entity e = event.getEntity();
-        if(!(e.getScoreboardTags().contains("carryhelper"))){
+        if (!(e.getScoreboardTags().contains("carryhelper"))) {
             return;
         }
 
-        if(event.getDamage() < ((LivingEntity)e).getHealth()){
+        if (event.getDamage() < ((LivingEntity) e).getHealth()) {
             return;
         }
 
@@ -144,6 +130,20 @@ public class CarryListener implements Listener {
             return;
 
         tameable.setOwner(null);
+    }
+
+    @EventHandler
+    public void onSvenRightClick(PlayerInteractEntityEvent event) {
+        Entity clickedEntity = event.getRightClicked();
+
+        if (!(clickedEntity.getScoreboardTags().contains("carryhelper"))) {
+            return;
+        }
+
+        if (!(clickedEntity instanceof Tameable))
+            return;
+
+        event.setCancelled(true);
     }
 
 

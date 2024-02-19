@@ -21,7 +21,6 @@ public class Sven extends Wolf {
         this.setInvulnerable(true);
         this.addTag("carryhelper");
         this.setOwnerUUID(player.getUniqueId());
-
     }
 
     public boolean rideableUnderWater() {

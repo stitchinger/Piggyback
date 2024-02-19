@@ -12,30 +12,30 @@ import org.bukkit.event.entity.EntityTeleportEvent;
 public class WolfTeleportListener implements Listener {
 
     @EventHandler
-    public void onWolfTeleport(EntityTeleportEvent event){
-
-        if(!(event.getEntity() instanceof Wolf wolf)){
+    public void onWolfTeleport(EntityTeleportEvent event) {
+        if (!(event.getEntity() instanceof Wolf wolf)) {
             return;
         }
 
-        if(!wolf.getScoreboardTags().contains("carryhelper")){
+        if (!wolf.getScoreboardTags().contains("carryhelper")) {
             return;
         }
-
 
         wolfTeleportEffect(event.getFrom());
         wolfTeleportEffect(event.getTo());
     }
 
     private void wolfTeleportEffect(Location location) {
-        if(location == null)
+        if (location == null)
             return;
 
         World world = location.getWorld();
-        if(world == null)
-           return;
+        if (world == null)
+            return;
 
-        world.playSound(location, Sound.ENTITY_SHULKER_TELEPORT,1,1);
+        world.playSound(location, Sound.ENTITY_SHULKER_TELEPORT, 1, 1);
         world.spawnParticle(Particle.PORTAL, location, 100, 1, 1, 1, 0.0);
     }
+
+
 }
