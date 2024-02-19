@@ -12,7 +12,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.vehicle.VehicleExitEvent;
 
 import java.util.List;
 
@@ -27,8 +26,7 @@ public class CarryListener implements Listener {
             target = entities.get(0);
         }
 
-        if (!Piggyback.isProperItem(player)
-                || player.isSneaking()) {
+        if (!Piggyback.isProperItem(player) || player.isSneaking()) {
             return;
         }
 
