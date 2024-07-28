@@ -5,6 +5,7 @@ import io.georgeous.piggyback.listeners.WolfTeleportListener;
 import io.georgeous.piggyback.util.DualMap;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,9 +35,9 @@ public final class Piggyback extends JavaPlugin {
         return properItem;
     }
 
-    public static void startCarry(org.bukkit.entity.Player player, Entity target) {
+    public static void startCarry(org.bukkit.entity.Player player, Entity target, Wolf.Variant variant) {
         CarryCouple carryCouple = new CarryCouple(target, player);
-        carryCouple.start();
+        carryCouple.start(variant);
 
         carryCoupleMap.put(player, target, carryCouple);
         startCarryEffects(target.getLocation().clone().add(0, target.getBoundingBox().getHeight() / 2, 0));

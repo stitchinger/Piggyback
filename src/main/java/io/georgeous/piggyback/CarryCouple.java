@@ -3,12 +3,13 @@ package io.georgeous.piggyback;
 import io.georgeous.piggyback.modes.CarryMode;
 import io.georgeous.piggyback.modes.HybridMode;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Wolf;
 
 
 public class CarryCouple {
-    private Entity target;
-    private org.bukkit.entity.Player carrier;
-    private CarryMode currentMode;
+    private final Entity target;
+    private final org.bukkit.entity.Player carrier;
+    private final CarryMode currentMode;
 
     public CarryCouple(Entity target, org.bukkit.entity.Player carrier) {
         this.target = target;
@@ -20,8 +21,8 @@ public class CarryCouple {
         currentMode.update();
     }
 
-    public void start() {
-        currentMode.start();
+    public void start(Wolf.Variant variant) {
+        currentMode.start(variant);
     }
 
     public void stop() {

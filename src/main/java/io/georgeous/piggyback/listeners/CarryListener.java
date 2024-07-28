@@ -22,7 +22,7 @@ public class CarryListener implements Listener {
         org.bukkit.entity.Player player = event.getPlayer();
         Entity target = null;
         List<Entity> entities = Bukkit.getServer().selectEntities(player, "@e[name=!" + player.getName() + ",type=!boat, sort=nearest,limit=1,tag=!surrogate,distance=..2]");
-        if (entities.size() > 0) {
+        if (!entities.isEmpty()) {
             target = entities.get(0);
         }
 
@@ -37,7 +37,8 @@ public class CarryListener implements Listener {
             PlayerStartCarryEvent e = new PlayerStartCarryEvent(player, target);
             Bukkit.getServer().getPluginManager().callEvent(e);
             if (!e.isCancelled()) {
-                Piggyback.startCarry(player, target);
+                Wolf.Variant variant = e.getVariant();
+                Piggyback.startCarry(player, target, variant);
             }
 
         } else {
@@ -95,7 +96,6 @@ public class CarryListener implements Listener {
         CarryCouple carriedCC = Piggyback.carryCoupleMap.getCCFromCarriedEntity(event.getPlayer());
         if (carriedCC != null) {
             Piggyback.stopCarry(carriedCC.getCarrier());
-            return;
         }
     }
 
@@ -109,7 +109,6 @@ public class CarryListener implements Listener {
         CarryCouple carriedCC = Piggyback.carryCoupleMap.getCCFromCarriedEntity(event.getEntity());
         if (carriedCC != null) {
             Piggyback.stopCarry(carriedCC.getCarrier());
-            return;
         }
     }
 

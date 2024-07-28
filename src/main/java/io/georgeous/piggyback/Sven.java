@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R1.CraftWorld;
 
 
 import java.util.Objects;
@@ -30,7 +30,7 @@ public class Sven extends Wolf {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.4D, 3.0F, 1.5F, true));
+        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.4D, 3.0F, 1.5F));
 
         // Todo Faster Swimming
 

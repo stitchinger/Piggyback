@@ -6,8 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
-import org.bukkit.craftbukkit.v1_20_R4.entity.*;
+import org.bukkit.craftbukkit.v1_21_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R1.entity.*;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -25,12 +25,13 @@ public class HybridMode extends CarryMode {
     }
 
     @Override
-    public void start() {
+    public void start(Wolf.Variant variant) {
         sven = createCarryInBetween(player, target);
         sven.setOwner(player);
         PotionEffect dolphin = new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 999999999,20, false, false, false);
         sven.addPotionEffect(dolphin);
         sven.addPassenger(target);
+        sven.setVariant(variant);
     }
 
     @Override
