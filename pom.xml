@@ -33,7 +33,7 @@
                 <version>3.1.0</version>
                 <configuration>
                     <outputDirectory>/Users/georg/Development/Minecraft/MC-Generations/server/plugins</outputDirectory>
-                    <finalName>Piggyback</finalName>
+                    <finalName>Piggyback_1.21</finalName>
                 </configuration>
             </plugin>
             <plugin>
