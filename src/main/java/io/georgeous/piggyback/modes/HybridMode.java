@@ -79,9 +79,11 @@ public class HybridMode extends CarryMode {
         Location tp = new Location(wolf.getWorld(), wolf.getLocation().getX(), 1.0d, wolf.getLocation().getZ());
         wolf.teleport(tp);
         wolf.setInvisible(true);
-        net.minecraft.world.entity.animal.Wolf a = ((CraftWolf) (wolf)).getHandle();
-        if (a instanceof Sven) {
-            ((Sven) a).vanish();
+        wolf.setVisibleByDefault(false);
+        wolf.remove();
+        net.minecraft.world.entity.animal.Wolf craftWolf = ((CraftWolf) (wolf)).getHandle();
+        if (craftWolf instanceof Sven) {
+            ((Sven) craftWolf).vanish();
         }
 
     }
