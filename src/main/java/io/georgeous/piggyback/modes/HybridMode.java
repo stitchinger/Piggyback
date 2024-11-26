@@ -6,8 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_21_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_21_R1.entity.*;
+import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R2.entity.*;
 import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -30,7 +30,13 @@ public class HybridMode extends CarryMode {
         sven.setOwner(player);
         PotionEffect dolphin = new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 999999999,20, false, false, false);
         sven.addPotionEffect(dolphin);
-        sven.addPassenger(target);
+        ArmorStand inBetween = (ArmorStand) target.getWorld().spawnEntity(target.getLocation(), EntityType.ARMOR_STAND);
+        inBetween.setMarker(true);
+        inBetween.setInvulnerable(true);
+        inBetween.setInvisible(true);
+        inBetween.addScoreboardTag("inBetweenCarryEntity");
+        sven.addPassenger(inBetween);
+        inBetween.addPassenger(target);
         sven.setVariant(variant);
     }
 
@@ -38,6 +44,12 @@ public class HybridMode extends CarryMode {
     public void stop() {
         sven.getPassengers().forEach(passenger -> {
             sven.removePassenger(passenger);
+            if(passenger.getScoreboardTags().contains("inBetweenCarryEntity")){
+                passenger.getPassengers().forEach(p -> {
+                    passenger.removePassenger(p);
+                });
+                passenger.remove();
+            }
             passenger.teleport(sven.getLocation());
         });
 
@@ -82,8 +94,8 @@ public class HybridMode extends CarryMode {
         wolf.setVisibleByDefault(false);
         wolf.remove();
         net.minecraft.world.entity.animal.Wolf craftWolf = ((CraftWolf) (wolf)).getHandle();
-        if (craftWolf instanceof Sven) {
-            ((Sven) craftWolf).vanish();
+        if (craftWolf instanceof Sven sven) {
+            sven.vanish();
         }
 
     }

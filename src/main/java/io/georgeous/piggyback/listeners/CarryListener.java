@@ -5,23 +5,46 @@ import io.georgeous.piggyback.Piggyback;
 import io.georgeous.piggyback.events.PlayerStartCarryEvent;
 import io.georgeous.piggyback.events.PlayerStopCarryEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CarryListener implements Listener {
+
+    public static List<Entity> filterEntities(List<Entity> entities) {
+        return entities.stream()
+                .filter(entity -> entity instanceof LivingEntity) // Exclude non-living entities
+                .filter(entity -> !entity.getScoreboardTags().contains("surrogate")) // Exclude entities with "surrogate" tag
+                .collect(Collectors.toList()); // Collect the remaining entities
+    }
+
+    public static List<Entity> sortEntitiesByDistance(List<Entity> entities, Location location) {
+        return entities.stream()
+                .sorted((entity1, entity2) -> {
+                    double distance1 = entity1.getLocation().distance(location);
+                    double distance2 = entity2.getLocation().distance(location);
+                    return Double.compare(distance1, distance2);
+                })
+                .toList(); // Collect the sorted entities into a new list
+    }
 
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         org.bukkit.entity.Player player = event.getPlayer();
         Entity target = null;
-        List<Entity> entities = Bukkit.getServer().selectEntities(player, "@e[name=!" + player.getName() + ",type=!boat, sort=nearest,limit=1,tag=!surrogate,distance=..2]");
+        List<Entity> nearbyEntities = player.getNearbyEntities(1,1,1);
+        List<Entity> filtered = filterEntities(nearbyEntities);
+        List<Entity> entities = sortEntitiesByDistance(filtered,player.getLocation());
+
         if (!entities.isEmpty()) {
             target = entities.get(0);
         }
@@ -30,7 +53,8 @@ public class CarryListener implements Listener {
             return;
         }
 
-        if (Piggyback.carryCoupleMap.getCCFromCarrierPlayer(player) == null) {
+        CarryCouple carryCouple = Piggyback.carryCoupleMap.getCCFromCarrierPlayer(player);
+        if (carryCouple == null) {
             if (target == null) {
                 return;
             }
@@ -42,6 +66,10 @@ public class CarryListener implements Listener {
             }
 
         } else {
+            double distance = player.getLocation().distance(carryCouple.getTarget().getLocation());
+            if(distance > 2)
+                return;
+
             PlayerStopCarryEvent e = new PlayerStopCarryEvent(player);
             Bukkit.getServer().getPluginManager().callEvent(e);
             if (!e.isCancelled()) {
@@ -101,12 +129,22 @@ public class CarryListener implements Listener {
 
     @EventHandler
     public void playerDeath(PlayerDeathEvent event) {
-        CarryCouple carrierCC = Piggyback.carryCoupleMap.getCCFromCarrierPlayer(event.getEntity());
+        Player player = event.getEntity();
+        CarryCouple carrierCC = Piggyback.carryCoupleMap.getCCFromCarrierPlayer(player);
         if (carrierCC != null) {
             Piggyback.stopCarry(carrierCC.getCarrier());
             return;
         }
-        CarryCouple carriedCC = Piggyback.carryCoupleMap.getCCFromCarriedEntity(event.getEntity());
+        CarryCouple carriedCC = Piggyback.carryCoupleMap.getCCFromCarriedEntity(player);
+        if (carriedCC != null) {
+            Piggyback.stopCarry(carriedCC.getCarrier());
+        }
+    }
+
+    @EventHandler
+    public void entityDeath(EntityDeathEvent event) {
+        Entity entity = event.getEntity();
+        CarryCouple carriedCC = Piggyback.carryCoupleMap.getCCFromCarriedEntity(entity);
         if (carriedCC != null) {
             Piggyback.stopCarry(carriedCC.getCarrier());
         }

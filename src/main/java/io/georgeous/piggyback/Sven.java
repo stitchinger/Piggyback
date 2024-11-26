@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_21_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
 
 
 import java.util.Objects;
@@ -38,7 +38,7 @@ public class Sven extends Wolf {
     }
 
     public void vanish() {
-        kill();
+        remove(RemovalReason.DISCARDED);
     }
 
 }
