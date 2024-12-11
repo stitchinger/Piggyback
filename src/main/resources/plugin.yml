@@ -1,5 +1,5 @@
 name: Piggyback
-version: ${project.version}
+version: "$version"
 main: io.georgeous.piggyback.Piggyback
 api-version: "1.21"
 
