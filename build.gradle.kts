@@ -2,20 +2,20 @@ import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
 plugins {
     id("java")
-    id("io.papermc.paperweight.userdev") version "1.7.5"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.16"
 }
 
 group = "io.georgeous.piggyback"
-version = "0.1"
+version = "1.0-SNAPSHOT"
 
-paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.REOBF_PRODUCTION
-
+paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.MOJANG_PRODUCTION;
+    
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.5-R0.1-SNAPSHOT")
 }
 
 tasks {
@@ -34,11 +34,8 @@ tasks {
     }
     
     processResources {
-        val props = mapOf("version" to version)
-        inputs.properties(props)
-        filteringCharset = "UTF-8"
-        filesMatching("plugin.yml") {
-            expand(props)
+        filesMatching("paper-plugin.yml") {
+            expand("version" to version)
         }
     }
 

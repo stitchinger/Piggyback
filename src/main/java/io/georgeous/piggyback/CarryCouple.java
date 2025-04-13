@@ -3,15 +3,17 @@ package io.georgeous.piggyback;
 import io.georgeous.piggyback.modes.CarryMode;
 import io.georgeous.piggyback.modes.HybridMode;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
+import org.jspecify.annotations.NullMarked;
 
-
+@NullMarked
 public class CarryCouple {
     private final Entity target;
-    private final org.bukkit.entity.Player carrier;
+    private final Player carrier;
     private final CarryMode currentMode;
 
-    public CarryCouple(Entity target, org.bukkit.entity.Player carrier) {
+    public CarryCouple(Entity target, Player carrier) {
         this.target = target;
         this.carrier = carrier;
         this.currentMode = new HybridMode(this);
@@ -33,7 +35,7 @@ public class CarryCouple {
         return target;
     }
 
-    public org.bukkit.entity.Player getCarrier() {
+    public Player getCarrier() {
         return carrier;
     }
 }

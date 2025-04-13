@@ -2,11 +2,12 @@ package io.georgeous.piggyback.events;
 
 import io.georgeous.piggyback.Piggyback;
 import org.bukkit.entity.Entity;
-
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class PlayerStopCarryEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
@@ -19,6 +20,10 @@ public class PlayerStopCarryEvent extends Event implements Cancellable {
         this.target = Piggyback.carryCoupleMap.getCCFromCarrierPlayer(this.player).getTarget();
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     public org.bukkit.entity.Player getPlayer() {
         return player;
     }
@@ -29,10 +34,6 @@ public class PlayerStopCarryEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 
