@@ -2,21 +2,23 @@ package io.georgeous.piggyback.util;
 
 import io.georgeous.piggyback.CarryCouple;
 import org.bukkit.entity.Entity;
-
+import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@NullMarked
 public class DualMap {
-    public Map<org.bukkit.entity.Player, CarryCouple> carriers = new HashMap<>();
-    public Map<Entity, CarryCouple> carried = new HashMap<>();
+    public Map<Player, CarryCouple> carriers;
+    public Map<Entity, CarryCouple> carried;
 
     public DualMap() {
         carriers = new HashMap<>();
         carried = new HashMap<>();
     }
 
-    public CarryCouple getCCFromCarrierPlayer(org.bukkit.entity.Player player) {
+    public CarryCouple getCCFromCarrierPlayer(Player player) {
         return carriers.get(player);
     }
 
@@ -24,19 +26,19 @@ public class DualMap {
         return carried.get(entity);
     }
 
-    public void put(org.bukkit.entity.Player player, Entity entity, CarryCouple carryCouple) {
+    public void put(Player player, Entity entity, CarryCouple carryCouple) {
         carriers.put(player, carryCouple);
         carried.put(entity, carryCouple);
     }
 
-    public void remove(org.bukkit.entity.Player player) {
+    public void remove(Player player) {
         Entity target = carriers.get(player).getTarget();
         carried.remove(target);
         carriers.remove(player);
     }
 
     public void remove(Entity entity) {
-        org.bukkit.entity.Player player = carried.get(entity).getCarrier();
+        Player player = carried.get(entity).getCarrier();
         carriers.remove(player);
         carried.remove(entity);
     }

@@ -4,15 +4,16 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.CraftWorld;
-
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.Objects;
 
-
+@NullMarked
 public class Sven extends Wolf {
 
     public Sven(Location loc, org.bukkit.entity.Player player) {
@@ -21,7 +22,7 @@ public class Sven extends Wolf {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
         this.setInvulnerable(true);
         this.addTag("carryhelper");
-        this.setOwnerUUID(player.getUniqueId());
+        this.setOwner(((CraftPlayer) player).getHandle());
     }
 
     public boolean rideableUnderWater() {
@@ -40,5 +41,4 @@ public class Sven extends Wolf {
     public void vanish() {
         remove(RemovalReason.DISCARDED);
     }
-
 }

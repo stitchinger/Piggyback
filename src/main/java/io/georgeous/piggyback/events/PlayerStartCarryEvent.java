@@ -1,21 +1,23 @@
 package io.georgeous.piggyback.events;
 
 import org.bukkit.entity.Entity;
-
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class PlayerStartCarryEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
-    org.bukkit.entity.Player player;
-    Entity target;
-    private Wolf.Variant variant;
+    private final Player player;
+    private final Entity target;
     boolean canceled;
+    private Wolf.Variant variant;
 
-    public PlayerStartCarryEvent(org.bukkit.entity.Player player, Entity target) {
+    public PlayerStartCarryEvent(Player player, Entity target) {
         this.player = player;
         this.target = target;
         this.canceled = false;
@@ -23,7 +25,11 @@ public class PlayerStartCarryEvent extends Event implements Cancellable {
 
     }
 
-    public org.bukkit.entity.Player getPlayer() {
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
+    public Player getPlayer() {
         return player;
     }
 
@@ -33,10 +39,6 @@ public class PlayerStartCarryEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

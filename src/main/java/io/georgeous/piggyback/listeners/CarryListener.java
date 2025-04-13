@@ -14,39 +14,41 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@NullMarked
 public class CarryListener implements Listener {
 
     public static List<Entity> filterEntities(List<Entity> entities) {
         return entities.stream()
-                .filter(entity -> entity instanceof LivingEntity) // Exclude non-living entities
-                .filter(entity -> !entity.getScoreboardTags().contains("surrogate")) // Exclude entities with "surrogate" tag
-                .collect(Collectors.toList()); // Collect the remaining entities
+            .filter(entity -> entity instanceof LivingEntity) // Exclude non-living entities
+            .filter(entity -> !entity.getScoreboardTags().contains("surrogate")) // Exclude entities with "surrogate" tag
+            .collect(Collectors.toList()); // Collect the remaining entities
     }
 
     public static List<Entity> sortEntitiesByDistance(List<Entity> entities, Location location) {
         return entities.stream()
-                .sorted((entity1, entity2) -> {
-                    double distance1 = entity1.getLocation().distance(location);
-                    double distance2 = entity2.getLocation().distance(location);
-                    return Double.compare(distance1, distance2);
-                })
-                .toList(); // Collect the sorted entities into a new list
+            .sorted((entity1, entity2) -> {
+                double distance1 = entity1.getLocation().distance(location);
+                double distance2 = entity2.getLocation().distance(location);
+                return Double.compare(distance1, distance2);
+            })
+            .toList(); // Collect the sorted entities into a new list
     }
 
     @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         org.bukkit.entity.Player player = event.getPlayer();
         Entity target = null;
-        List<Entity> nearbyEntities = player.getNearbyEntities(1,1,1);
+        List<Entity> nearbyEntities = player.getNearbyEntities(1, 1, 1);
         List<Entity> filtered = filterEntities(nearbyEntities);
-        List<Entity> entities = sortEntitiesByDistance(filtered,player.getLocation());
+        List<Entity> entities = sortEntitiesByDistance(filtered, player.getLocation());
 
         if (!entities.isEmpty()) {
-            target = entities.get(0);
+            target = entities.getFirst();
         }
 
         if (!Piggyback.isProperItem(player) || player.isSneaking()) {
@@ -65,10 +67,12 @@ public class CarryListener implements Listener {
                 Piggyback.startCarry(player, target, variant);
             }
 
-        } else {
+        }
+        else {
             double distance = player.getLocation().distance(carryCouple.getTarget().getLocation());
-            if(distance > 2)
+            if (distance > 2) {
                 return;
+            }
 
             PlayerStopCarryEvent e = new PlayerStopCarryEvent(player);
             Bukkit.getServer().getPluginManager().callEvent(e);
@@ -80,24 +84,29 @@ public class CarryListener implements Listener {
 
     @EventHandler
     public void disableSuffocationDamage(EntityDamageEvent event) {
-        if (!(Piggyback.carryCoupleMap.carried.containsKey(event.getEntity())))
+        if (!(Piggyback.carryCoupleMap.carried.containsKey(event.getEntity()))) {
             return; // Damaged Entity is not carried
-        if (!(event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)))
+        }
+        if (!(event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION))) {
             return; // Damage not caused by suffocation
+        }
 
         event.setCancelled(true);
     }
 
     @EventHandler
     public void disableDismount(EntityDismountEvent event) {
-        if (!Piggyback.carryCoupleMap.isCarried(event.getEntity()))
+        if (!Piggyback.carryCoupleMap.isCarried(event.getEntity())) {
             return;
+        }
 
-        if (!(event.getEntity() instanceof Player player))
+        if (!(event.getEntity() instanceof Player player)) {
             return;
+        }
 
-        if (!player.isSneaking())
+        if (!player.isSneaking()) {
             return;
+        }
 
         event.setCancelled(true);
     }
@@ -105,8 +114,9 @@ public class CarryListener implements Listener {
     @EventHandler
     public void onArmorStandEquip(PlayerArmorStandManipulateEvent event) {
         ArmorStand armorStand = event.getRightClicked();
-        if (armorStand.getScoreboardTags().contains("carryhelper"))
+        if (armorStand.getScoreboardTags().contains("carryhelper")) {
             event.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -161,8 +171,9 @@ public class CarryListener implements Listener {
             return;
         }
 
-        if (!(e instanceof Tameable tameable))
+        if (!(e instanceof Tameable tameable)) {
             return;
+        }
 
         tameable.setOwner(null);
     }
@@ -175,11 +186,10 @@ public class CarryListener implements Listener {
             return;
         }
 
-        if (!(clickedEntity instanceof Tameable))
+        if (!(clickedEntity instanceof Tameable)) {
             return;
+        }
 
         event.setCancelled(true);
     }
-
-
 }
