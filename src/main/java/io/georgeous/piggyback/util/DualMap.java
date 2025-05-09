@@ -4,6 +4,7 @@ import io.georgeous.piggyback.CarryCouple;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class DualMap {
         carried = new HashMap<>();
     }
 
+    @Nullable
     public CarryCouple getCCFromCarrierPlayer(Player player) {
         return carriers.get(player);
     }
