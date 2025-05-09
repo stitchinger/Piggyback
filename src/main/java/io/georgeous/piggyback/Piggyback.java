@@ -4,7 +4,13 @@ import com.google.common.base.Preconditions;
 import io.georgeous.piggyback.listeners.CarryListener;
 import io.georgeous.piggyback.listeners.WolfTeleportListener;
 import io.georgeous.piggyback.util.DualMap;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wolf;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,6 +48,9 @@ public final class Piggyback extends JavaPlugin {
 
     public static void stopCarry(org.bukkit.entity.Player player) {
         CarryCouple carryCouple = carryCoupleMap.getCCFromCarrierPlayer(player);
+        if (carryCouple == null) {
+            return;
+        }
 
         carryCouple.stop();
         carryCoupleMap.remove(player);
