@@ -29,7 +29,8 @@ public final class Piggyback extends JavaPlugin {
     public static DualMap carryCoupleMap = new DualMap();
     @Nullable
     private static Piggyback instance;
-    private final NamespacedKey ITEM_KEY = new NamespacedKey(this, "baby_handler");
+    
+    public static final NamespacedKey ITEM_KEY = new NamespacedKey("Piggyback", "baby_handler");
 
     private static Piggyback instance() {
         Preconditions.checkNotNull(instance, "Cannot access instance before plugin was initialized!");
