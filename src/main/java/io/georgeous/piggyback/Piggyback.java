@@ -30,7 +30,7 @@ public final class Piggyback extends JavaPlugin {
     @Nullable
     private static Piggyback instance;
     
-    public static final NamespacedKey ITEM_KEY = new NamespacedKey("Piggyback", "baby_handler");
+    public static final NamespacedKey ITEM_KEY = new NamespacedKey("piggyback", "baby_handler");
 
     private static Piggyback instance() {
         Preconditions.checkNotNull(instance, "Cannot access instance before plugin was initialized!");
